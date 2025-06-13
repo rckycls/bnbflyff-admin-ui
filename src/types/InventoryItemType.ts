@@ -4,6 +4,7 @@ export type InventoryItem = {
   quantity: number;
   enhancement?: number;
   image?: string;
+  imageFullPath?: string;
   abilityDisplay?: string;
   displayName?: string;
   description?: string;

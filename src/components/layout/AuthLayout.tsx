@@ -9,6 +9,7 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import { GiNinjaArmor } from "react-icons/gi";
 
 const navLinks = [
   {
@@ -32,6 +33,15 @@ const navLinks = [
     submenu: [
       { name: "Character List", to: "/characters" },
       { name: "View Character Inventory", to: "/characters/inventory" },
+    ],
+  },
+  {
+    name: "Items",
+    to: "/items",
+    icon: <GiNinjaArmor />,
+    submenu: [
+      { name: "Player Items", to: "/items" },
+      { name: "Trade Logs", to: "/trade-logs" },
     ],
   },
 ];
@@ -213,7 +223,7 @@ const AuthLayout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-accent text-center text-sm py-2 text-black font-medium">
+      <footer className="bg-secondary text-center text-sm py-2 text-black font-medium">
         © {new Date().getFullYear()} FlyFF Admin Panel. All rights reserved.
       </footer>
     </div>

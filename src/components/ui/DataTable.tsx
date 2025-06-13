@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -12,6 +12,7 @@ import type {
   VisibilityState,
   SortingState,
 } from "@tanstack/react-table";
+import { useLoader } from "../../context/PageLoaderContext";
 
 interface DataTableProps<TData> {
   data: TData[];
@@ -68,6 +69,12 @@ function DataTable<TData>({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  const { setLoading } = useLoader();
+
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading]);
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-4">
@@ -88,9 +95,7 @@ function DataTable<TData>({
           ))}
       </div>
 
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : isError ? (
+      {isError ? (
         <p className="text-red-600">Error loading data.</p>
       ) : (
         <>
@@ -197,7 +202,7 @@ function DataTable<TData>({
 
           <div className="flex justify-between items-center mt-4">
             <button
-              className="px-3 py-1 bg-accent text-surface text-sm rounded disabled:opacity-50"
+              className="px-3 py-1 bg-secondary text-surface text-sm rounded disabled:opacity-50"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
@@ -207,7 +212,7 @@ function DataTable<TData>({
               Page {pagination.pageIndex + 1} of {totalPages}
             </span>
             <button
-              className="px-3 py-1 bg-accent text-surface text-sm rounded disabled:opacity-50"
+              className="px-3 py-1 bg-secondary text-surface text-sm rounded disabled:opacity-50"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >

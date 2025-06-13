@@ -1,10 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #4da8da;
-  --color-accent: #ffd66b;
-  --color-highlight: #80d8c3;
-  --color-surface: #f5f5f5;
+  --color-brand: #0076c1;
+  --color-secondary: #f6b400;
+  --color-accent-blue: #e5f4fb;
+  --color-accent-gold: #fff3d0;
+  --color-surface: #f5f7fa;
+  --color-text: #2c3e50;
+  --color-muted: #aeb6bf;
+  --color-success: #2ecc71;
+  --color-warning: #e67e22;
+  --color-danger: #e74c3c;
 }
 
 .tooltip {

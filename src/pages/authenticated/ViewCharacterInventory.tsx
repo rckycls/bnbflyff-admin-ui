@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../../api/axiosClient";
 import { useLoader } from "../../context/PageLoaderContext";
 import { useLocation } from "react-router-dom";
 import EquipmentSlots from "../../components/inventory/EquipmentSlots";
 import InventoryTooltip from "../../components/inventory/InventoryTooltip";
 import InventorySlots from "../../components/inventory/InventorySlots";
+import useItemTooltip from "../../hooks/useItemTooltip";
 
 type InventoryItem = {
   slotIndex: number;
@@ -53,15 +54,16 @@ const ACCESSORIES = [
   { slot: 23, title: "Earring" },
 ];
 
+const defaultInventoryData = {
+  backpack1: [] as InventoryItem[],
+  backpack2: [] as InventoryItem[],
+  backpack3: [] as InventoryItem[],
+  bank: [] as InventoryItem[],
+  inventory: [] as InventoryItem[],
+  equipment: [] as EquipmentItem[],
+};
+
 const ViewCharacterInventory: React.FC = () => {
-  const defaultInventoryData = {
-    backpack1: [] as InventoryItem[],
-    backpack2: [] as InventoryItem[],
-    backpack3: [] as InventoryItem[],
-    bank: [] as InventoryItem[],
-    inventory: [] as InventoryItem[],
-    equipment: [] as EquipmentItem[],
-  };
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const idPlayer = urlParams.get("id") || "";
@@ -77,13 +79,14 @@ const ViewCharacterInventory: React.FC = () => {
   ] = useState(defaultInventoryData);
 
   const [error, setError] = useState<string | null>(null);
-  const [tooltipItem, setTooltipItem] = useState<InventoryItem | null>(null);
-  const [tooltipPosition, setTooltipPosition] = useState<{
-    x: number;
-    y: number;
-  }>({ x: 0, y: 0 });
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const {
+    tooltipItem,
+    setTooltipItem,
+    tooltipPosition,
+    tooltipRef,
+    containerRef,
+    handleItemSlotClick,
+  } = useItemTooltip();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -135,42 +138,6 @@ const ViewCharacterInventory: React.FC = () => {
     }
   };
 
-  const handleSlotClick = (
-    item?: InventoryItem,
-    event?: React.MouseEvent<HTMLDivElement>
-  ) => {
-    event?.stopPropagation();
-    if (!item || !item.displayName || !containerRef.current) return;
-
-    const slotElement = event?.currentTarget as HTMLDivElement;
-    const slotRect = slotElement.getBoundingClientRect();
-    const containerRect = containerRef.current.getBoundingClientRect();
-
-    const offsetX = slotRect.left - containerRect.left;
-    const offsetY = slotRect.top - containerRect.top;
-
-    setTooltipItem(item);
-    setTimeout(() => {
-      if (!tooltipRef.current || !containerRef.current) return;
-
-      const tooltipRect = tooltipRef.current.getBoundingClientRect();
-      const tooltipWidth = tooltipRect.width;
-      const containerWidth = containerRef.current.offsetWidth;
-
-      let adjustedX = offsetX + slotRect.width + 4;
-
-      if (adjustedX + tooltipWidth > containerWidth) {
-        adjustedX = offsetX - tooltipWidth - 4;
-        if (adjustedX < 0) adjustedX = containerWidth - tooltipWidth - 4;
-      }
-
-      setTooltipPosition({
-        x: adjustedX,
-        y: offsetY,
-      });
-    }, 0);
-  };
-
   const renderBackpack = (
     title: string,
     backpack: InventoryItem[],
@@ -181,7 +148,7 @@ const ViewCharacterInventory: React.FC = () => {
         totalSlots={length}
         title={title}
         items={backpack}
-        handleSlotClick={handleSlotClick}
+        handleSlotClick={handleItemSlotClick}
       />
     );
   };
@@ -261,7 +228,7 @@ const ViewCharacterInventory: React.FC = () => {
       </form>
 
       {error && (
-        <div className="flex items-center gap-2 text-accent bg-accent-200 border border-accent-300 rounded p-3 text-sm md:text-base font-medium">
+        <div className="flex items-center gap-2 text-secondary bg-secondary-200 border border-secondary-300 rounded p-3 text-sm md:text-base font-medium">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5 shrink-0"
@@ -289,7 +256,7 @@ const ViewCharacterInventory: React.FC = () => {
               items={MAIN_EQUIPMENT}
               title="Main Equipment"
               equipmentBySlot={equipmentBySlot}
-              handleSlotClick={handleSlotClick}
+              handleSlotClick={handleItemSlotClick}
             />
 
             {/* Costume */}
@@ -297,7 +264,7 @@ const ViewCharacterInventory: React.FC = () => {
               items={COSTUME}
               title="Costumes"
               equipmentBySlot={equipmentBySlot}
-              handleSlotClick={handleSlotClick}
+              handleSlotClick={handleItemSlotClick}
             />
 
             {/* Accessories */}
@@ -305,7 +272,7 @@ const ViewCharacterInventory: React.FC = () => {
               items={ACCESSORIES}
               title="Accessories"
               equipmentBySlot={equipmentBySlot}
-              handleSlotClick={handleSlotClick}
+              handleSlotClick={handleItemSlotClick}
             />
           </div>
 
@@ -313,14 +280,14 @@ const ViewCharacterInventory: React.FC = () => {
           <InventorySlots
             title="Inventory"
             items={inventory}
-            handleSlotClick={handleSlotClick}
+            handleSlotClick={handleItemSlotClick}
           />
 
           {showBank && (
             <InventorySlots
               title="Bank"
               items={bank}
-              handleSlotClick={handleSlotClick}
+              handleSlotClick={handleItemSlotClick}
             />
           )}
 

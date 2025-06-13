@@ -11,6 +11,7 @@ import UpdateCharacter from "./pages/authenticated/UpdateCharacter";
 import ViewCharacterInventory from "./pages/authenticated/ViewCharacterInventory";
 import PageLoader from "./components/PageLoader";
 import { useLoader } from "./context/PageLoaderContext";
+import ViewTradeLogs from "./pages/authenticated/ViewTradeLogs";
 
 const App: React.FC = () => {
   const { loading } = useLoader();
@@ -34,6 +35,7 @@ const App: React.FC = () => {
               path="/characters/view/:m_idPlayer"
               element={<UpdateCharacter />}
             />
+            <Route path="/trade-logs" element={<ViewTradeLogs />} />
           </Route>
         </Route>
       </Routes>

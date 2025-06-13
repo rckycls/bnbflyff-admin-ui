@@ -84,7 +84,7 @@ const Dashboard: React.FC = () => {
                   <Legend />
                   <Bar
                     dataKey="votes"
-                    fill="var(--color-accent)"
+                    fill="var(--color-secondary)"
                     radius={[5, 5, 5, 5]}
                   />
                 </BarChart>
@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
               </li>
               <li className="flex items-center justify-between">
                 <span>Database</span>
-                <span className="px-2 py-1 rounded-full text-xs bg-accent text-white">
+                <span className="px-2 py-1 rounded-full text-xs bg-secondary text-white">
                   Connected
                 </span>
               </li>
@@ -149,13 +149,13 @@ const Dashboard: React.FC = () => {
               We’ve added new weapons and consumables to the Vote Shop!
             </p>
           </li>
-          <li className="border-l-4 border-accent pl-4">
+          <li className="border-l-4 border-secondary pl-4">
             <h3 className="text-lg font-medium">Scheduled Server Maintenance</h3>
             <p className="text-sm text-gray-600">
               Expect downtime on Friday, June 7th at 1 AM.
             </p>
           </li>
-          <li className="border-l-4 border-highlight pl-4">
+          <li className="border-l-4 border-accent-gold pl-4">
             <h3 className="text-lg font-medium">Patch 1.2.3 Released</h3>
             <p className="text-sm text-gray-600">
               New fixes, improved performance, and UI enhancements.

@@ -10,6 +10,7 @@ import { debounce } from "lodash";
 import DataTable from "../../components/ui/DataTable";
 import { FaExchangeAlt, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { GiNinjaArmor } from "react-icons/gi";
 
 type Character = {
   m_idPlayer: string;
@@ -24,7 +25,6 @@ type Character = {
   m_nFatiguePoint: number;
   isblock: string | null;
   CreateTime: string;
-  // Add other fields you want to display
 };
 
 type CharactersResponse = {
@@ -75,24 +75,26 @@ const ManageCharacters: React.FC = () => {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { data, isLoading, isError } = useQuery<CharactersResponse>({
-    queryKey: [
-      "characters",
-      pagination.pageIndex,
-      pagination.pageSize,
-      globalFilter,
-      sorting,
-    ],
-    queryFn: () =>
-      fetchCharacters(
-        pagination.pageIndex + 1,
+  const { data, isLoading, isFetching, isError } = useQuery<CharactersResponse>(
+    {
+      queryKey: [
+        "characters",
+        pagination.pageIndex,
         pagination.pageSize,
         globalFilter,
-        sorting
-      ),
-    placeholderData: (prev) => prev,
-    staleTime: 5 * 60 * 1000,
-  });
+        sorting,
+      ],
+      queryFn: () =>
+        fetchCharacters(
+          pagination.pageIndex + 1,
+          pagination.pageSize,
+          globalFilter,
+          sorting
+        ),
+      placeholderData: (prev) => prev,
+      staleTime: 5 * 60 * 1000,
+    }
+  );
 
   const columns: ColumnDef<Character>[] = [
     { accessorKey: "account", header: "Account" },
@@ -121,21 +123,30 @@ const ManageCharacters: React.FC = () => {
               onClick={() => navigate("/characters/" + row.original.m_idPlayer)}
               title="Edit"
             >
-              <FaEdit size={16} />
+              <FaEdit size={18} />
             </button>
             <button
               className="p-2 rounded hover:bg-gray-100 text-red-600 cursor-pointer"
               onClick={() => console.log("Delete", row.original)}
               title="Delete"
             >
-              <FaTrashAlt size={16} />
+              <FaTrashAlt size={18} />
             </button>
             <button
-              className="p-2 rounded hover:bg-gray-100 text-accent cursor-pointer"
-              onClick={() => console.log("Ban", row.original)}
-              title="Ban"
+              className="p-2 rounded hover:bg-gray-100 text-emerald-600 cursor-pointer"
+              onClick={() => console.log("Trade Logs", row.original)}
+              title="Trade Logs"
             >
-              <FaExchangeAlt size={16} />
+              <FaExchangeAlt size={18} />
+            </button>
+            <button
+              className="p-2 rounded hover:bg-gray-100 text-amber-950 cursor-pointer"
+              onClick={() =>
+                navigate("/characters/inventory?id=" + row.original.m_idPlayer)
+              }
+              title="View Inventory"
+            >
+              <GiNinjaArmor size={22} />
             </button>
           </div>
         );
@@ -185,7 +196,7 @@ const ManageCharacters: React.FC = () => {
         onSortingChange={setSorting}
         searchInput={searchInput}
         filterInput={null}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         isError={isError}
       />
     </div>
