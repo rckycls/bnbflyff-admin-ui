@@ -1,6 +1,7 @@
 import type { InventoryItem } from "./InventoryItemType";
 
 export type TradeItemLogType = {
+  itemId: number;
   idPlayer: string;
   itemData: InventoryItem;
 };

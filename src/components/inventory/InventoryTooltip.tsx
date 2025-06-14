@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import type { InventoryItem } from "../../types/InventoryItemType";
+import { FaCheckCircle, FaCopy } from "react-icons/fa";
 
 type InventoryTooltipType = {
   tooltipRef: React.RefObject<HTMLDivElement | null>;
@@ -8,45 +9,48 @@ type InventoryTooltipType = {
     y: number;
   };
   tooltipItem: InventoryItem | null;
-  setTooltipItem: React.Dispatch<React.SetStateAction<InventoryItem | null>>;
 };
 
 const InventoryTooltip: React.FC<InventoryTooltipType> = ({
   tooltipRef,
   tooltipPosition,
   tooltipItem,
-  setTooltipItem,
 }) => {
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(e.target as Node)
-      ) {
-        setTooltipItem(null);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+  const [copied, setCopied] = useState<boolean>(false);
+
+  const handleCopy = () => {
+    if (tooltipItem?.itemId && !copied) {
+      navigator.clipboard.writeText(tooltipItem.itemId.toString());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000); // hide after 1s
+    }
+  };
 
   return (
     <div
       key={`inventory-tooltip-${Math.floor(Math.random() * 10000)}`}
       ref={tooltipRef}
-      className="absolute z-50 bg-white border border-brand rounded shadow-lg p-2 text-sm max-w-xs w-50 overflow-auto animate-fade-in-scale"
+      className="absolute z-100 bg-white border border-brand rounded shadow-lg p-2 text-sm max-w-xs w-50 overflow-auto animate-fade-in-scale"
       style={{
         top: tooltipPosition.y,
         left: tooltipPosition.x,
         wordWrap: "break-word",
       }}
     >
-      <div className="font-bold mb-1 text-brand">
+      <div className="font-bold text-brand">
         {tooltipItem?.displayName}{" "}
         {tooltipItem?.enhancement &&
           tooltipItem?.enhancement > 0 &&
           `+${tooltipItem?.enhancement}`}
       </div>
+      {tooltipItem?.itemId && (
+        <div className="uppercase font-semibold text-secondary text-xs mb-1 flex gap-x-2 flex-wrap flex-row">
+          <h1>{`Item ID: ${tooltipItem.itemId}`}</h1>
+          <button className="cursor-pointer" onClick={handleCopy}>
+            {copied ? <FaCheckCircle /> : <FaCopy />}
+          </button>
+        </div>
+      )}
       {tooltipItem?.abilityDisplay && (
         <div className="text-xs font-semibold mb-1">
           {tooltipItem?.abilityDisplay}
@@ -71,7 +75,10 @@ const InventoryTooltip: React.FC<InventoryTooltipType> = ({
       {[tooltipItem?.awake1, tooltipItem?.awake2, tooltipItem?.awake3].map(
         (awake) =>
           !!awake && (
-            <div className="text-blue-600 text-xs">
+            <div
+              key={`item-awake--${Math.floor(Math.random() * 1000)}`}
+              className="text-blue-600 text-xs"
+            >
               {awake.label} {awake.value}
             </div>
           )

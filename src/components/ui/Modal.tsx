@@ -1,6 +1,7 @@
 // components/Modal.tsx
 import React, { type ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useItemTooltip } from "../../context/ItemTooltipContext";
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 
@@ -36,6 +37,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
   size = "md",
 }) => {
+  const { modalRef } = useItemTooltip();
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -48,7 +50,8 @@ const Modal: React.FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-surface/40 bg-opacity-50 overflow-y-auto"
+      ref={modalRef}
+      className="modal fixed inset-0 z-50 flex items-center justify-center bg-surface/40 bg-opacity-50 overflow-y-auto"
       onClick={onClose}
     >
       <div

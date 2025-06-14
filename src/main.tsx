@@ -7,19 +7,22 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { PageLoaderProvider } from "./context/PageLoaderContext.tsx";
 import { ModalProvider } from "./context/ModalContext.tsx";
+import { ItemTooltipProvider } from "./context/ItemTooltipContext.tsx";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ModalProvider>
-          <PageLoaderProvider>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </PageLoaderProvider>
-        </ModalProvider>
+        <ItemTooltipProvider>
+          <ModalProvider>
+            <PageLoaderProvider>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </PageLoaderProvider>
+          </ModalProvider>
+        </ItemTooltipProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>

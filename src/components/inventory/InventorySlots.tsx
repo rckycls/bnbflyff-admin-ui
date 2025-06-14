@@ -6,16 +6,11 @@ type InventorySlotsProps = {
   title: string;
   items: InventoryItem[];
   totalSlots?: number;
-  handleSlotClick: (
-    item?: InventoryItem,
-    event?: React.MouseEvent<HTMLDivElement>
-  ) => void;
 };
 
 const InventorySlots: React.FC<InventorySlotsProps> = ({
   title,
   items,
-  handleSlotClick,
   totalSlots = 42,
 }) => {
   return (
@@ -25,7 +20,12 @@ const InventorySlots: React.FC<InventorySlotsProps> = ({
         {Array.from({ length: totalSlots }).map((_, index) => {
           const item = items.find((i) => i.slotIndex === index);
           return (
-            <InventorySlot item={item} handleSlotClick={handleSlotClick} />
+            <InventorySlot
+              key={`inventory-slot--${Math.floor(
+                Math.random() * 10000
+              )}_${index}`}
+              item={item}
+            />
           );
         })}
       </div>

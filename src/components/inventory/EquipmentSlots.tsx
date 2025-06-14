@@ -1,25 +1,22 @@
 import React from "react";
 import { PiEmptyFill } from "react-icons/pi";
 import type { InventoryItem } from "../../types/InventoryItemType";
+import { useItemTooltip } from "../../context/ItemTooltipContext";
 
 type EquipmentLabelType = { slot: number; title: string };
 
 type EquipmentSlotsProps = {
   title: string;
   items: EquipmentLabelType[];
-  handleSlotClick: (
-    item?: InventoryItem,
-    event?: React.MouseEvent<HTMLDivElement>
-  ) => void;
   equipmentBySlot: (slotNum: number) => InventoryItem | undefined;
 };
 
 const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
   title,
   items,
-  handleSlotClick,
   equipmentBySlot,
 }) => {
+  const { handleItemSlotClick } = useItemTooltip();
   return (
     <div>
       <h3 className="font-semibold mb-1 text-brand">{title}</h3>
@@ -32,7 +29,7 @@ const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
               className="flex-1 flex flex-col items-center"
             >
               <div
-                onClick={(e) => handleSlotClick(item, e)}
+                onClick={(e) => handleItemSlotClick(item, e)}
                 className="relative w-6 h-6 p-0.5 border border-brand/50 rounded bg-white flex items-center justify-center shadow-sm cursor-pointer"
                 style={{ minWidth: 36, minHeight: 36 }}
               >

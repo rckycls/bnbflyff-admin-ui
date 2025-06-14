@@ -14,7 +14,7 @@ export type UseItemTooltipReturn = {
     item?: InventoryItem,
     event?: React.MouseEvent<HTMLDivElement>
   ) => void;
-  handleClickOutside: () => void;
+  handleClickOutside: (elementId: string) => void;
 };
 
 const useItemTooltip = (): UseItemTooltipReturn => {
@@ -62,23 +62,22 @@ const useItemTooltip = (): UseItemTooltipReturn => {
     }, 0);
   };
 
-  const handleClickOutside = () => () => {
-    const handleClickOutside = (e: MouseEvent) => {
-      console.log("hello");
+  const handleClickOutside = (elementId?: string) => {
+    console.log(elementId);
+    const listener = (e: Event) => {
+      const mouseEvent = e as MouseEvent;
       if (
         tooltipRef.current &&
-        !tooltipRef.current.contains(e.target as Node)
+        !tooltipRef.current.contains(mouseEvent.target as Node)
       ) {
         setTooltipItem(null);
       }
     };
-    document
-      .getElementById("tradeLogWindow")
-      ?.addEventListener("click", handleClickOutside);
-    return () =>
-      document
-        .getElementById("tradeLogWindow")
-        ?.removeEventListener("click", handleClickOutside);
+
+    const doc = elementId ? document.getElementById(elementId) : document;
+    doc?.addEventListener("click", listener);
+
+    return () => doc?.removeEventListener("click", listener);
   };
 
   return {

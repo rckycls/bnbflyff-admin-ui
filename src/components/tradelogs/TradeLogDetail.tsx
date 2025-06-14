@@ -1,21 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import type { TradeLogType } from "../../types/TradeLogType";
 import { FaExchangeAlt } from "react-icons/fa";
 import TradeLogWindow from "./TradeLogWindow";
-import useItemTooltip from "../../hooks/useItemTooltip";
-import InventoryTooltip from "../inventory/InventoryTooltip";
 
 const TradeLogDetail: React.FC<TradeLogType> = (tradeDetail) => {
   const [player1, player2] = tradeDetail.details;
-  const {
-    containerRef,
-    tooltipItem,
-    setTooltipItem,
-    tooltipPosition,
-    tooltipRef,
-    handleItemSlotClick,
-    handleClickOutside,
-  } = useItemTooltip();
+
   const player1Items = tradeDetail.items.filter(
     (item) => item.idPlayer === player1.idPlayer
   );
@@ -23,16 +13,13 @@ const TradeLogDetail: React.FC<TradeLogType> = (tradeDetail) => {
     (item) => item.idPlayer === player2.idPlayer
   );
 
-  useEffect(handleClickOutside, []);
-
+  console.log(player1Items);
   return (
     <div
       id="tradeLogWindow"
       className="flex flex-col items-center justify-between w-full rounded-lg p-2 bg-brand  "
-      ref={containerRef}
     >
       <TradeLogWindow
-        handleItemSlotClick={handleItemSlotClick}
         key={`trade-log-window-1`}
         detail={player1}
         items={player1Items}
@@ -42,20 +29,11 @@ const TradeLogDetail: React.FC<TradeLogType> = (tradeDetail) => {
         <FaExchangeAlt size={14} className="text-accent-gold" />
       </div>
       <TradeLogWindow
-        handleItemSlotClick={handleItemSlotClick}
         key={`trade-log-window-2`}
         detail={player2}
         items={player2Items}
         penya={player1.penya}
       />
-      {tooltipItem && (
-        <InventoryTooltip
-          tooltipRef={tooltipRef}
-          tooltipPosition={tooltipPosition}
-          tooltipItem={tooltipItem}
-          setTooltipItem={setTooltipItem}
-        />
-      )}
     </div>
   );
 };

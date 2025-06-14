@@ -4,9 +4,7 @@ import axiosClient from "../../api/axiosClient";
 import { useLoader } from "../../context/PageLoaderContext";
 import { useLocation } from "react-router-dom";
 import EquipmentSlots from "../../components/inventory/EquipmentSlots";
-import InventoryTooltip from "../../components/inventory/InventoryTooltip";
 import InventorySlots from "../../components/inventory/InventorySlots";
-import useItemTooltip from "../../hooks/useItemTooltip";
 
 type InventoryItem = {
   slotIndex: number;
@@ -79,27 +77,6 @@ const ViewCharacterInventory: React.FC = () => {
   ] = useState(defaultInventoryData);
 
   const [error, setError] = useState<string | null>(null);
-  const {
-    tooltipItem,
-    setTooltipItem,
-    tooltipPosition,
-    tooltipRef,
-    containerRef,
-    handleItemSlotClick,
-  } = useItemTooltip();
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(e.target as Node)
-      ) {
-        setTooltipItem(null);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
 
   const onSubmit = async (
     data: { m_idPlayer: string },
@@ -144,12 +121,7 @@ const ViewCharacterInventory: React.FC = () => {
     length: number = 24
   ) => {
     return (
-      <InventorySlots
-        totalSlots={length}
-        title={title}
-        items={backpack}
-        handleSlotClick={handleItemSlotClick}
-      />
+      <InventorySlots totalSlots={length} title={title} items={backpack} />
     );
   };
 
@@ -157,7 +129,6 @@ const ViewCharacterInventory: React.FC = () => {
     equipment.find((i) => i.slotIndex === slot);
 
   useEffect(() => {
-    setTooltipItem(null);
     if (idPlayer) {
       form.setValue("m_idPlayer", idPlayer);
       onSubmit({ m_idPlayer: idPlayer }, showBackpack, showBank);
@@ -166,10 +137,7 @@ const ViewCharacterInventory: React.FC = () => {
   }, [idPlayer]);
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-surface text-gray-800 p-6 space-y-8 max-w-full mx-auto"
-    >
+    <div className="min-h-screen bg-surface text-gray-800 p-6 space-y-8 max-w-full mx-auto">
       <header className="text-center">
         <h1 className="text-3xl font-bold text-brand">View Player Inventory</h1>
         <p className="mt-2 text-gray-600">
@@ -247,68 +215,55 @@ const ViewCharacterInventory: React.FC = () => {
         </div>
       )}
 
-      {(inventory.length > 0 || equipment.length > 0) && (
-        <div className="flex-wrap flex-col lg:flex-row md:flex md:gap-8 space-y-6 md:space-y-0">
-          {/* Equipment Section */}
-          <div className="flex-1 space-y-2 ">
-            {/* Main Equipment */}
-            <EquipmentSlots
-              items={MAIN_EQUIPMENT}
-              title="Main Equipment"
-              equipmentBySlot={equipmentBySlot}
-              handleSlotClick={handleItemSlotClick}
-            />
-
-            {/* Costume */}
-            <EquipmentSlots
-              items={COSTUME}
-              title="Costumes"
-              equipmentBySlot={equipmentBySlot}
-              handleSlotClick={handleItemSlotClick}
-            />
-
-            {/* Accessories */}
-            <EquipmentSlots
-              items={ACCESSORIES}
-              title="Accessories"
-              equipmentBySlot={equipmentBySlot}
-              handleSlotClick={handleItemSlotClick}
-            />
-          </div>
-
-          {/* Inventory Section */}
-          <InventorySlots
-            title="Inventory"
-            items={inventory}
-            handleSlotClick={handleItemSlotClick}
+      <div
+        id="inventoryContainer"
+        className="flex-wrap flex-col lg:flex-row md:flex md:gap-8 space-y-6 md:space-y-0"
+      >
+        {/* Equipment Section */}
+        <div className="flex-1 space-y-2 ">
+          {/* Main Equipment */}
+          <EquipmentSlots
+            items={MAIN_EQUIPMENT}
+            title="Main Equipment"
+            equipmentBySlot={equipmentBySlot}
           />
 
-          {showBank && (
-            <InventorySlots
-              title="Bank"
-              items={bank}
-              handleSlotClick={handleItemSlotClick}
-            />
-          )}
+          {/* Costume */}
+          <EquipmentSlots
+            items={COSTUME}
+            title="Costumes"
+            equipmentBySlot={equipmentBySlot}
+          />
 
-          {showBackpack && (
-            <div className="w-full gap-4 flex flex-col lg:flex-row items-stretch justify-center">
-              {renderBackpack("Backpack 1", backpack1, 6)}
-              {renderBackpack("Bag 1", backpack2)}
-              {renderBackpack("Bag 2", backpack3)}
-            </div>
-          )}
+          {/* Accessories */}
+          <EquipmentSlots
+            items={ACCESSORIES}
+            title="Accessories"
+            equipmentBySlot={equipmentBySlot}
+          />
         </div>
-      )}
 
-      {tooltipItem && (
-        <InventoryTooltip
-          tooltipRef={tooltipRef}
-          tooltipPosition={tooltipPosition}
-          tooltipItem={tooltipItem}
-          setTooltipItem={setTooltipItem}
-        />
-      )}
+        {/* Inventory Section */}
+        <InventorySlots title="Inventory" items={inventory} />
+
+        {showBank && <InventorySlots title="Bank" items={bank} />}
+
+        {showBackpack && (
+          <div className="w-full gap-4 flex flex-col lg:flex-row items-stretch justify-center">
+            {renderBackpack("Backpack 1", backpack1, 6)}
+            {renderBackpack("Bag 1", backpack2)}
+            {renderBackpack("Bag 2", backpack3)}
+          </div>
+        )}
+      </div>
+      {/* 
+        {tooltipItem && (
+          <InventoryTooltip
+            tooltipRef={tooltipRef}
+            tooltipPosition={tooltipPosition}
+            tooltipItem={tooltipItem}
+          />
+        )} */}
     </div>
   );
 };

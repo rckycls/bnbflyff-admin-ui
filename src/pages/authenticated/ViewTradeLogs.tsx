@@ -100,7 +100,9 @@ const ViewTradeLogs: React.FC = () => {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-start gap-2">
             <button
               onClick={() => {
-                navigate("/characters/" + tradeLog.details[0].idPlayer);
+                navigate(
+                  "/characters/inventory?id=" + tradeLog.details[0].idPlayer
+                );
               }}
               className="px-2 py-0.5 bg-secondary text-white rounded-md text-xs min-w-[80px]"
               title={`View ${tradeLog.details[0].CharacterName} inventory`}
@@ -108,7 +110,9 @@ const ViewTradeLogs: React.FC = () => {
             <FaExchangeAlt size={10} className="text-brand hidden md:flex" />
             <button
               onClick={() => {
-                navigate("/characters/" + tradeLog.details[1].idPlayer);
+                navigate(
+                  "/characters/inventory?id=" + tradeLog.details[1].idPlayer
+                );
               }}
               className="px-2 py-0.5 bg-secondary text-white rounded-md text-xs min-w-[80px]"
               title={`View ${tradeLog.details[1].CharacterName} inventory`}
