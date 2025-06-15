@@ -1,6 +1,4 @@
-Certainly! Here's a clean and professional **Update Log** without emojis:
 
----
 
 ## Update Log – June 15, 2025
 
@@ -16,6 +14,3 @@ Certainly! Here's a clean and professional **Update Log** without emojis:
   * Enables searching for a specific item.
   * Displays a list of players who have the item in their inventory, bank, or pockets.
 
----
-
-Let me know if you'd like this formatted for a changelog file (`CHANGELOG.md`) or displayed in a UI.
