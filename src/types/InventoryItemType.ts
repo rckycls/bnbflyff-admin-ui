@@ -15,4 +15,5 @@ export type InventoryItem = {
   awake2?: { label: string; value: string };
   awake3?: { label: string; value: string };
   accessoryBonus?: string[];
+  originalModel?: { image: string; itemId: number; displayName: string };
 };

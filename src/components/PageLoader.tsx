@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FiLoader } from "react-icons/fi";
 import { useLoader } from "../context/PageLoaderContext";
@@ -7,8 +7,14 @@ import buffPang from "../assets/infopeng.png";
 const PageLoader: React.FC = () => {
   const { message } = useLoader();
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  });
   return (
-    <div className="absolute h-screen w-full bg-surface/80 z-100 flex items-center justify-center flex-col p-4">
+    <div className="absolute h-full w-full bg-surface/80 z-100 flex items-center justify-center flex-col p-4">
       <motion.img
         src={buffPang}
         className="h-1/6"

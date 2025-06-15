@@ -80,19 +80,23 @@ function DataTable<TData>({
       <div className="flex flex-wrap items-center gap-4">
         {searchInput}
         {filterInput}
-        {table
-          .getAllLeafColumns()
-          .filter((column) => column.id !== "actions")
-          .map((column) => (
-            <label key={column.id} className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={column.getIsVisible()}
-                onChange={column.getToggleVisibilityHandler()}
-              />
-              {String(column.columnDef.header)}
-            </label>
-          ))}
+        {!!Object.keys(columnVisibility).length &&
+          table
+            .getAllLeafColumns()
+            .filter((column) => column.id !== "actions")
+            .map((column) => (
+              <label
+                key={column.id}
+                className="flex items-center gap-2 text-sm"
+              >
+                <input
+                  type="checkbox"
+                  checked={column.getIsVisible()}
+                  onChange={column.getToggleVisibilityHandler()}
+                />
+                {String(column.columnDef.header)}
+              </label>
+            ))}
       </div>
 
       {isError ? (
@@ -147,6 +151,11 @@ function DataTable<TData>({
               </tbody>
             </table>
           </div>
+          {table.getRowModel().rows.length <= 0 && (
+            <div className="text-center text-gray-500 py-10">
+              <p className="text-sm">No data available</p>
+            </div>
+          )}
 
           {/* Card view for small screens */}
           <div className="sm:hidden space-y-4">

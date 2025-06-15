@@ -5,6 +5,7 @@ import { useLoader } from "../../context/PageLoaderContext";
 import { useLocation } from "react-router-dom";
 import EquipmentSlots from "../../components/inventory/EquipmentSlots";
 import InventorySlots from "../../components/inventory/InventorySlots";
+import getInventoryItems from "../../helpers/inventorySlotHelper";
 
 type InventoryItem = {
   slotIndex: number;
@@ -25,32 +26,6 @@ type InventoryItem = {
 };
 
 type EquipmentItem = InventoryItem;
-
-const MAIN_EQUIPMENT = [
-  { slot: 10, title: "Primary Weapon" },
-  { slot: 9, title: "Secondary Weapon / Shield" },
-  { slot: 2, title: "Suit" },
-  { slot: 4, title: "Gauntlet" },
-  { slot: 5, title: "Boots" },
-  { slot: 6, title: "Helmet" },
-];
-
-const COSTUME = [
-  { slot: 27, title: "Cloth" },
-  { slot: 28, title: "Gloves" },
-  { slot: 29, title: "Shoes" },
-  { slot: 26, title: "Hat" },
-  { slot: 8, title: "Cloak" },
-  { slot: 12, title: "Mask / Glasses" },
-];
-
-const ACCESSORIES = [
-  { slot: 19, title: "Necklace" },
-  { slot: 20, title: "Ring" },
-  { slot: 21, title: "Ring" },
-  { slot: 22, title: "Earring" },
-  { slot: 23, title: "Earring" },
-];
 
 const defaultInventoryData = {
   backpack1: [] as InventoryItem[],
@@ -223,21 +198,21 @@ const ViewCharacterInventory: React.FC = () => {
         <div className="flex-1 space-y-2 ">
           {/* Main Equipment */}
           <EquipmentSlots
-            items={MAIN_EQUIPMENT}
+            items={getInventoryItems("MAIN_EQUIPMENT")}
             title="Main Equipment"
             equipmentBySlot={equipmentBySlot}
           />
 
           {/* Costume */}
           <EquipmentSlots
-            items={COSTUME}
+            items={getInventoryItems("COSTUME")}
             title="Costumes"
             equipmentBySlot={equipmentBySlot}
           />
 
           {/* Accessories */}
           <EquipmentSlots
-            items={ACCESSORIES}
+            items={getInventoryItems("ACCESSORIES")}
             title="Accessories"
             equipmentBySlot={equipmentBySlot}
           />

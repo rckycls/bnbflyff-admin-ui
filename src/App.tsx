@@ -12,6 +12,7 @@ import ViewCharacterInventory from "./pages/authenticated/ViewCharacterInventory
 import PageLoader from "./components/PageLoader";
 import { useLoader } from "./context/PageLoaderContext";
 import ViewTradeLogs from "./pages/authenticated/ViewTradeLogs";
+import ViewPlayerItems from "./pages/authenticated/ViewPlayerItems";
 
 const App: React.FC = () => {
   const { loading } = useLoader();
@@ -36,6 +37,7 @@ const App: React.FC = () => {
               element={<UpdateCharacter />}
             />
             <Route path="/trade-logs" element={<ViewTradeLogs />} />
+            <Route path="/items" element={<ViewPlayerItems />} />
           </Route>
         </Route>
       </Routes>
