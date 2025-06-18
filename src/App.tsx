@@ -14,6 +14,7 @@ import { useLoader } from "./context/PageLoaderContext";
 import ViewTradeLogs from "./pages/authenticated/ViewTradeLogs";
 import ViewPlayerItems from "./pages/authenticated/ViewPlayerItems";
 import ManageGameMasters from "./pages/authenticated/ManageGameMasters";
+import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
   const { loading } = useLoader();
@@ -42,6 +43,7 @@ const App: React.FC = () => {
             <Route path="/items" element={<ViewPlayerItems />} />
           </Route>
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

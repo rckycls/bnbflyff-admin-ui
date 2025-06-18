@@ -13,6 +13,8 @@ import type {
   SortingState,
 } from "@tanstack/react-table";
 import { useLoader } from "../../context/PageLoaderContext";
+import aibatt1 from "../../assets/aibatt1.png";
+import ErrorContainer from "./ErrorContainer";
 
 interface DataTableProps<TData> {
   data: TData[];
@@ -105,7 +107,7 @@ function DataTable<TData>({
       </div>
 
       {isError ? (
-        <p className="text-red-600">Error loading data.</p>
+        <ErrorContainer />
       ) : (
         <>
           {/* Table for medium and up */}
