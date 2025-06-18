@@ -1,4 +1,6 @@
 import React from "react";
+import { FaArrowRight } from "react-icons/fa6";
+import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
 import {
   LineChart,
   Line,
@@ -76,7 +78,11 @@ const Dashboard: React.FC = () => {
             </h2>
             <div className="mt-4 h-48">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={voteShopData} layout="vertical" margin={{ left: 40 }}>
+                <BarChart
+                  data={voteShopData}
+                  layout="vertical"
+                  margin={{ left: 40 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis type="number" />
                   <YAxis dataKey="item" type="category" />
@@ -96,37 +102,38 @@ const Dashboard: React.FC = () => {
         {/* Status Cards */}
         <div className="space-y-4">
           <div className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-xl font-semibold text-brand mb-2">Server Status</h2>
+            <h2 className="text-xl font-semibold text-brand mb-2">
+              Server Statistics
+            </h2>
             <ul className="space-y-2 text-sm">
               <li className="flex items-center justify-between">
-                <span>Login Server</span>
-                <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">
-                  Online
-                </span>
+                <span>Total Accounts</span>
+                <div className="cursor-pointer px-2 py-1 rounded-full text-xs bg-brand/20 text-brand flex gap-x-1 items-center justify-center ">
+                  <span className="font-semibold">143</span>
+                  <HiMiniArrowTopRightOnSquare size={12} />
+                </div>
               </li>
               <li className="flex items-center justify-between">
-                <span>Game Server</span>
-                <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">
-                  Online
-                </span>
+                <span>Total Characters</span>
+                <div className="cursor-pointer px-2 py-1 rounded-full text-xs bg-secondary/20 text-secondary flex gap-x-1 items-center justify-center ">
+                  <span className="font-semibold">420</span>
+                  <HiMiniArrowTopRightOnSquare size={12} />
+                </div>
               </li>
               <li className="flex items-center justify-between">
-                <span>Database</span>
-                <span className="px-2 py-1 rounded-full text-xs bg-secondary text-white">
-                  Connected
-                </span>
-              </li>
-              <li className="flex items-center justify-between">
-                <span>Website</span>
-                <span className="px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-700">
-                  Maintenance
-                </span>
+                <span>Total Guilds</span>
+                <div className="cursor-pointer px-2 py-1 rounded-full text-xs bg-muted flex gap-x-1 items-center justify-center ">
+                  <span className="font-semibold">666</span>
+                  <HiMiniArrowTopRightOnSquare size={12} />
+                </div>
               </li>
             </ul>
           </div>
 
           <div className="bg-white rounded-2xl shadow p-4">
-            <h2 className="text-xl font-semibold text-brand mb-2">Recent Activity</h2>
+            <h2 className="text-xl font-semibold text-brand mb-2">
+              Recent Activity
+            </h2>
             <ul className="text-sm text-gray-700 space-y-1">
               <li>🟢 User "Admin" logged in</li>
               <li>🛒 Vote Shop purchase: Knight Blade</li>
@@ -150,7 +157,9 @@ const Dashboard: React.FC = () => {
             </p>
           </li>
           <li className="border-l-4 border-secondary pl-4">
-            <h3 className="text-lg font-medium">Scheduled Server Maintenance</h3>
+            <h3 className="text-lg font-medium">
+              Scheduled Server Maintenance
+            </h3>
             <p className="text-sm text-gray-600">
               Expect downtime on Friday, June 7th at 1 AM.
             </p>

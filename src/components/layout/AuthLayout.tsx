@@ -108,7 +108,7 @@ const AuthLayout = () => {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       {/* Header */}
-      <header className="bg-brand text-white px-4 py-3 shadow-md flex justify-between items-center">
+      <header className="sticky top-0 z-50 bg-brand text-white px-4 py-3 shadow-md flex justify-between items-center">
         <h1 className="text-xl font-bold">FlyFF Admin</h1>
 
         {/* Desktop nav */}
@@ -180,7 +180,7 @@ const AuthLayout = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="sm:hidden bg-brand text-white flex flex-col px-4 py-3 gap-1"
+            className="sm:hidden sticky top-[2.75rem] z-40 bg-brand/80 text-white flex flex-col px-4 py-3 gap-1"
           >
             {navLinks.map((link) => (
               <div key={link.name} className="flex flex-col">
