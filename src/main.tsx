@@ -14,15 +14,15 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ItemTooltipProvider>
-          <ModalProvider>
-            <PageLoaderProvider>
+        <PageLoaderProvider>
+          <ItemTooltipProvider>
+            <ModalProvider>
               <AuthProvider>
                 <App />
               </AuthProvider>
-            </PageLoaderProvider>
-          </ModalProvider>
-        </ItemTooltipProvider>
+            </ModalProvider>
+          </ItemTooltipProvider>
+        </PageLoaderProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>

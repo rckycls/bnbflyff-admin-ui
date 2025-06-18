@@ -35,6 +35,7 @@ interface DataTableProps<TData> {
   isError?: boolean;
   searchInput?: React.ReactNode;
   filterInput?: React.ReactNode;
+  className?: string;
 }
 
 function DataTable<TData>({
@@ -50,6 +51,7 @@ function DataTable<TData>({
   filterInput,
   sorting,
   onSortingChange,
+  className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
@@ -76,14 +78,17 @@ function DataTable<TData>({
   }, [isLoading]);
 
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${className}`}>
       <div className="flex flex-wrap items-center gap-4">
         {searchInput}
         {filterInput}
         {!!Object.keys(columnVisibility).length &&
           table
             .getAllLeafColumns()
-            .filter((column) => column.id !== "actions")
+            .filter(
+              (column) =>
+                column.id !== "actions" && !column.id.startsWith("NS_")
+            )
             .map((column) => (
               <label
                 key={column.id}
@@ -114,9 +119,9 @@ function DataTable<TData>({
                         key={header.id}
                         className="px-2 py-1 sm:px-4 sm:py-2 border-b whitespace-normal break-words"
                         onClick={
-                          header.id !== "actions"
-                            ? header.column.getToggleSortingHandler()
-                            : () => {}
+                          header.id === "actions" || header.id.startsWith("NS_")
+                            ? () => {}
+                            : header.column.getToggleSortingHandler()
                         }
                       >
                         {flexRender(

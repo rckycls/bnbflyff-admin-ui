@@ -13,6 +13,7 @@ import PageLoader from "./components/PageLoader";
 import { useLoader } from "./context/PageLoaderContext";
 import ViewTradeLogs from "./pages/authenticated/ViewTradeLogs";
 import ViewPlayerItems from "./pages/authenticated/ViewPlayerItems";
+import ManageGameMasters from "./pages/authenticated/ManageGameMasters";
 
 const App: React.FC = () => {
   const { loading } = useLoader();
@@ -27,6 +28,7 @@ const App: React.FC = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<ManageAccounts />} />
             <Route path="/accounts/new" element={<CreateAccount />} />
+            <Route path="/gamemasters" element={<ManageGameMasters />} />
             <Route path="/characters" element={<ManageCharacters />} />
             <Route
               path="/characters/inventory"

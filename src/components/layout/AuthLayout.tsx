@@ -10,6 +10,7 @@ import {
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { GiNinjaArmor } from "react-icons/gi";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const navLinks = [
   {
@@ -44,6 +45,15 @@ const navLinks = [
       { name: "Trade Logs", to: "/trade-logs" },
     ],
   },
+  {
+    name: "GM",
+    to: "/gamemasters",
+    icon: <MdOutlineAdminPanelSettings />,
+    submenu: [
+      { name: "Manage Game Masters", to: "/gamemasters" },
+      { name: "Create New GM", to: "/gamemasters/new" },
+    ],
+  },
 ];
 
 const AuthLayout = () => {
@@ -54,10 +64,9 @@ const AuthLayout = () => {
   );
   const [submenuPosition, setSubmenuPosition] = useState<
     Record<string, "left" | "right">
-  >({}); // Track submenu position per menu item
+  >({});
 
   const submenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
   const location = useLocation();
 
   const toggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -72,27 +81,21 @@ const AuthLayout = () => {
   };
 
   const toggleDesktopDropdown = (name: string) => {
-    if (openDesktopDropdown === name) {
-      setOpenDesktopDropdown(null);
-      return;
-    }
-    setOpenDesktopDropdown(name);
+    setOpenDesktopDropdown((prev) => (prev === name ? null : name));
   };
 
-  // Effect to check submenu positioning when openDesktopDropdown changes
   useEffect(() => {
     if (openDesktopDropdown) {
       const submenuEl = submenuRefs.current[openDesktopDropdown];
       if (submenuEl) {
         const rect = submenuEl.getBoundingClientRect();
-        if (rect.right > window.innerWidth) {
-          // If submenu overflows right edge, align right
+        const availableWidth = window.innerWidth - rect.left;
+        if (availableWidth < rect.width + 32) {
           setSubmenuPosition((prev) => ({
             ...prev,
             [openDesktopDropdown]: "right",
           }));
         } else {
-          // Otherwise align left
           setSubmenuPosition((prev) => ({
             ...prev,
             [openDesktopDropdown]: "left",
@@ -126,30 +129,38 @@ const AuthLayout = () => {
                 {link.name}
                 {link.submenu && <FiChevronDown size={14} />}
               </button>
-
-              {link.submenu && openDesktopDropdown === link.name && (
-                <div
-                  ref={(el) => {
-                    submenuRefs.current[link.name] = el;
-                  }}
-                  className={`absolute top-full mt-2 bg-white text-black shadow-md rounded-md z-50 min-w-max ${
-                    submenuPosition[link.name] === "right"
-                      ? "right-0 left-auto"
-                      : "left-0 right-auto"
-                  }`}
-                >
-                  {link.submenu.map((sub) => (
-                    <Link
-                      key={sub.to}
-                      to={sub.to}
-                      onClick={closeMenu}
-                      className="block px-4 py-2 text-sm hover:bg-surface"
-                    >
-                      {sub.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              <AnimatePresence>
+                {link.submenu && openDesktopDropdown === link.name && (
+                  <motion.div
+                    ref={(el) => {
+                      submenuRefs.current[link.name] = el;
+                    }}
+                    key="submenu"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className={`
+        absolute top-full mt-2 z-50
+        bg-white text-black shadow-md rounded-md
+        min-w-[12rem] max-w-[calc(100vw-2rem)]
+        overflow-x-auto whitespace-nowrap
+        ${submenuPosition[link.name] === "right" ? "right-0" : "left-0"}
+      `}
+                  >
+                    {link.submenu.map((sub) => (
+                      <Link
+                        key={sub.to}
+                        to={sub.to}
+                        onClick={closeMenu}
+                        className="block px-4 py-2 text-sm hover:bg-surface"
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
         </nav>
@@ -185,23 +196,28 @@ const AuthLayout = () => {
                   {link.submenu && <FiChevronDown size={14} />}
                 </button>
 
-                {/* Submenu for mobile */}
-                {link.submenu && openDropdown === link.name && (
-                  <div className="pl-4 flex flex-col">
-                    {link.submenu.map((sub) => (
-                      <Link
-                        key={sub.to}
-                        to={sub.to}
-                        onClick={closeMenu}
-                        className="text-sm py-1"
-                      >
-                        {sub.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                <AnimatePresence>
+                  {link.submenu && openDropdown === link.name && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="pl-4 flex flex-col overflow-hidden"
+                    >
+                      {link.submenu.map((sub) => (
+                        <Link
+                          key={sub.to}
+                          to={sub.to}
+                          onClick={closeMenu}
+                          className="text-sm py-1"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                {/* No submenu link */}
                 {!link.submenu && (
                   <Link
                     to={link.to}

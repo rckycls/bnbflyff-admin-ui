@@ -14,7 +14,7 @@ const PageLoader: React.FC = () => {
     };
   });
   return (
-    <div className="absolute h-full w-full bg-surface/80 z-100 flex items-center justify-center flex-col p-4">
+    <div className="fixed top-0 left-0 h-screen w-full bg-surface/80 z-100 flex items-center justify-center flex-col p-4">
       <motion.img
         src={buffPang}
         className="h-1/6"
