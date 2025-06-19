@@ -1,16 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import {
-  FiMenu,
-  FiX,
-  FiUser,
-  FiUsers,
-  FiHome,
-  FiChevronDown,
-} from "react-icons/fi";
+import { FiMenu, FiX, FiHome, FiChevronDown } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
-import { GiNinjaArmor } from "react-icons/gi";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import iconAccount from "../../assets/icon_account.png";
+import iconCharacter from "../../assets/icon_character.png";
+import iconGuild from "../../assets/icon_guild.png";
+import iconInventory from "../../assets/icon_inventory.png";
+import iconGM from "../../assets/icon_gm.png";
 
 const navLinks = [
   {
@@ -21,7 +18,7 @@ const navLinks = [
   {
     name: "Accounts",
     to: "/accounts",
-    icon: <FiUsers />,
+    icon: <img src={iconAccount} className="w-5 h-5" />,
     submenu: [
       { name: "Manage Accounts", to: "/accounts" },
       { name: "Add Account", to: "/accounts/new" },
@@ -30,16 +27,25 @@ const navLinks = [
   {
     name: "Characters",
     to: "/characters",
-    icon: <FiUser />,
+    icon: <img src={iconCharacter} className="w-5 h-5" />,
     submenu: [
       { name: "Character List", to: "/characters" },
       { name: "View Character Inventory", to: "/characters/inventory" },
     ],
   },
   {
+    name: "Guilds",
+    to: "/guilds",
+    icon: <img src={iconGuild} className="w-5 h-5" />,
+    submenu: [
+      { name: "Character List", to: "/guilds" },
+      { name: "View Character Inventory", to: "/guilds/inventory" },
+    ],
+  },
+  {
     name: "Items",
     to: "/items",
-    icon: <GiNinjaArmor />,
+    icon: <img src={iconInventory} className="w-5 h-5" />,
     submenu: [
       { name: "Player Items", to: "/items" },
       { name: "Trade Logs", to: "/trade-logs" },
@@ -48,7 +54,7 @@ const navLinks = [
   {
     name: "GM",
     to: "/gamemasters",
-    icon: <MdOutlineAdminPanelSettings />,
+    icon: <img src={iconGM} className="w-5 h-5" />,
     submenu: [
       { name: "Manage Game Masters", to: "/gamemasters" },
       { name: "Create New GM", to: "/gamemasters/new" },

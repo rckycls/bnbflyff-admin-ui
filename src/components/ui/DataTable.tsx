@@ -13,7 +13,6 @@ import type {
   SortingState,
 } from "@tanstack/react-table";
 import { useLoader } from "../../context/PageLoaderContext";
-import aibatt1 from "../../assets/aibatt1.png";
 import ErrorContainer from "./ErrorContainer";
 
 interface DataTableProps<TData> {
@@ -111,9 +110,9 @@ function DataTable<TData>({
       ) : (
         <>
           {/* Table for medium and up */}
-          <div className="overflow-x-auto">
-            <table className="hidden sm:table w-full text-left border border-gray-200">
-              <thead className="bg-brand text-surface">
+          <div className="overflow-x-auto rounded-xl shadow-md border border-gray-200">
+            <table className="hidden sm:table w-full text-left">
+              <thead className="bg-brand text-surface rounded-t-lg">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
@@ -140,12 +139,16 @@ function DataTable<TData>({
                 ))}
               </thead>
               <tbody>
-                {table.getRowModel().rows.map((row) => (
+                {table.getRowModel().rows.map((row, index) => (
                   <tr key={row.id} className="even:bg-surface">
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="px-2 py-1 sm:px-4 sm:py-2 border-b whitespace-normal break-words"
+                        className={`px-2 py-1 sm:px-4 sm:py-2 whitespace-normal break-words ${
+                          index + 1 < table.getRowModel().rows.length
+                            ? "border-b border-b-muted"
+                            : ""
+                        }`}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
