@@ -17,7 +17,7 @@ import ErrorContainer from "./ErrorContainer";
 
 interface DataTableProps<TData> {
   data: TData[];
-  columns: ColumnDef<TData, any>[];
+  columns: ColumnDef<TData, any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   totalPages: number;
   pagination: {
     pageIndex: number;

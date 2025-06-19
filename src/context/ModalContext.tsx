@@ -4,11 +4,11 @@ import React, {
   useContext,
   useState,
   type ReactNode,
-} from "react";
-import Modal from "../components/ui/Modal";
-import { useItemTooltip } from "./ItemTooltipContext";
+} from 'react';
+import Modal from '../components/ui/Modal';
+import { useItemTooltip } from './ItemTooltipContext';
 
-type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
+type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 interface ModalContextType {
   showModal: (content: ReactNode, title?: string, size?: ModalSize) => void;
@@ -23,13 +23,13 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
   const [modalTitle, setModalTitle] = useState<string | undefined>();
-  const [modalSize, setModalSize] = useState<ModalSize>("md");
+  const [modalSize, setModalSize] = useState<ModalSize>('md');
   const { tooltipItem, setTooltipItem } = useItemTooltip();
 
   const showModal = (
     content: ReactNode,
     title?: string,
-    size: ModalSize = "md"
+    size: ModalSize = 'md'
   ) => {
     setModalContent(content);
     setModalTitle(title);
@@ -41,8 +41,10 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
     setIsOpen(false);
     setModalContent(null);
     setModalTitle(undefined);
-    setModalSize("md");
-    tooltipItem && setTooltipItem(null);
+    setModalSize('md');
+    if (tooltipItem) {
+      setTooltipItem(null);
+    }
   };
 
   return (
@@ -62,6 +64,6 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
 
 export const useModal = (): ModalContextType => {
   const context = useContext(ModalContext);
-  if (!context) throw new Error("useModal must be used within ModalProvider");
+  if (!context) throw new Error('useModal must be used within ModalProvider');
   return context;
 };

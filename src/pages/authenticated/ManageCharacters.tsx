@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import type {
   ColumnDef,
   VisibilityState,
   SortingState,
-} from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
-import axiosClient from "../../api/axiosClient";
-import { debounce } from "lodash";
-import DataTable from "../../components/ui/DataTable";
-import { FaExchangeAlt, FaEdit, FaTrashAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { GiNinjaArmor } from "react-icons/gi";
+} from '@tanstack/react-table';
+import { useQuery } from '@tanstack/react-query';
+import axiosClient from '../../api/axiosClient';
+import { debounce } from 'lodash';
+import DataTable from '../../components/ui/DataTable';
+import { FaExchangeAlt, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { GiNinjaArmor } from 'react-icons/gi';
 
 type Character = {
   m_idPlayer: string;
@@ -43,10 +43,10 @@ const fetchCharacters = async (
   sorting: SortingState
 ): Promise<CharactersResponse> => {
   const sortParam = sorting.length
-    ? `${sorting[0].id}:${sorting[0].desc ? "desc" : "asc"}`
+    ? `${sorting[0].id}:${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
-  const res = await axiosClient.get("/auth/characters", {
+  const res = await axiosClient.get('/auth/characters', {
     params: { page, limit, search, sort: sortParam },
   });
   return res.data;
@@ -71,14 +71,14 @@ const ManageCharacters: React.FC = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [globalFilter, setGlobalFilter] = React.useState('');
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { data, isLoading, isFetching, isError } = useQuery<CharactersResponse>(
     {
       queryKey: [
-        "characters",
+        'characters',
         pagination.pageIndex,
         pagination.pageSize,
         globalFilter,
@@ -97,44 +97,42 @@ const ManageCharacters: React.FC = () => {
   );
 
   const columns: ColumnDef<Character>[] = [
-    { accessorKey: "account", header: "Account" },
-    { accessorKey: "m_idPlayer", header: "ID" },
-    { accessorKey: "m_szName", header: "Name" },
-    { accessorKey: "m_nLevel", header: "Level" },
-    { accessorKey: "m_nJob", header: "Job" },
-    { accessorKey: "playerslot", header: "Player Slot" },
-    { accessorKey: "m_nHitPoint", header: "HP" },
-    { accessorKey: "m_nManaPoint", header: "MP" },
-    { accessorKey: "m_nFatiguePoint", header: "Fatigue" },
-    { accessorKey: "isblock", header: "Blocked" },
+    { accessorKey: 'account', header: 'Account' },
+    { accessorKey: 'm_idPlayer', header: 'ID' },
+    { accessorKey: 'm_szName', header: 'Name' },
+    { accessorKey: 'm_nLevel', header: 'Level' },
+    { accessorKey: 'm_nJob', header: 'Job' },
+    { accessorKey: 'playerslot', header: 'Player Slot' },
+    { accessorKey: 'm_nHitPoint', header: 'HP' },
+    { accessorKey: 'm_nManaPoint', header: 'MP' },
+    { accessorKey: 'm_nFatiguePoint', header: 'Fatigue' },
+    { accessorKey: 'isblock', header: 'Blocked' },
     {
-      accessorKey: "CreateTime",
-      header: "Created At",
+      accessorKey: 'CreateTime',
+      header: 'Created At',
       cell: ({ getValue }) => new Date(getValue() as string).toLocaleString(),
     },
     {
-      accessorKey: "actions",
-      header: "Actions",
+      accessorKey: 'actions',
+      header: 'Actions',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
             <button
               className="p-2 rounded hover:bg-gray-100 text-brand cursor-pointer"
-              onClick={() => navigate("/characters/" + row.original.m_idPlayer)}
+              onClick={() => navigate('/characters/' + row.original.m_idPlayer)}
               title="Edit"
             >
               <FaEdit size={18} />
             </button>
             <button
               className="p-2 rounded hover:bg-gray-100 text-red-600 cursor-pointer"
-              onClick={() => console.log("Delete", row.original)}
               title="Delete"
             >
               <FaTrashAlt size={18} />
             </button>
             <button
               className="p-2 rounded hover:bg-gray-100 text-emerald-600 cursor-pointer"
-              onClick={() => console.log("Trade Logs", row.original)}
               title="Trade Logs"
             >
               <FaExchangeAlt size={18} />
@@ -142,7 +140,7 @@ const ManageCharacters: React.FC = () => {
             <button
               className="p-2 rounded hover:bg-gray-100 text-amber-950 cursor-pointer"
               onClick={() =>
-                navigate("/characters/inventory?id=" + row.original.m_idPlayer)
+                navigate('/characters/inventory?id=' + row.original.m_idPlayer)
               }
               title="View Inventory"
             >

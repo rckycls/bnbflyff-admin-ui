@@ -1,14 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 import type {
   ColumnDef,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table";
-import React, { useEffect } from "react";
-import axiosClient from "../../api/axiosClient";
-import { debounce } from "lodash";
-import DataTable from "../ui/DataTable";
-import moment from "moment";
+} from '@tanstack/react-table';
+import React from 'react';
+import axiosClient from '../../api/axiosClient';
+import { debounce } from 'lodash';
+import DataTable from '../ui/DataTable';
+import moment from 'moment';
 
 type CommandLog = {
   m_szWords: string;
@@ -32,10 +32,10 @@ const fetchGMLogs = async (
   gmId: string
 ): Promise<GMLogsResponse> => {
   const sortParam = sorting.length
-    ? `${sorting[0].id}:${sorting[0].desc ? "desc" : "asc"}`
+    ? `${sorting[0].id}:${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
-  const res = await axiosClient.get("/auth/gamemasters/" + gmId, {
+  const res = await axiosClient.get('/auth/gamemasters/' + gmId, {
     params: { page, limit, search, sort: sortParam },
   });
   return res.data;
@@ -51,13 +51,13 @@ const GMLogsModal: React.FC<{ gmId: string }> = ({ gmId }) => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [globalFilter, setGlobalFilter] = React.useState('');
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { data, isLoading, isFetching, isError } = useQuery<GMLogsResponse>({
     queryKey: [
-      "GMLogs",
+      'GMLogs',
       gmId,
       pagination.pageIndex,
       pagination.pageSize,
@@ -77,13 +77,13 @@ const GMLogsModal: React.FC<{ gmId: string }> = ({ gmId }) => {
   });
 
   const columns: ColumnDef<CommandLog>[] = [
-    { accessorKey: "m_szWords", header: "Command" },
+    { accessorKey: 'm_szWords', header: 'Command' },
     {
-      accessorKey: "s_date",
-      header: "Date",
+      accessorKey: 's_date',
+      header: 'Date',
       cell: ({ row }) => {
-        return `${moment(row.original.s_date, "YYYYMMDDHHmmss").format(
-          "MMM D, Y HH:mm"
+        return `${moment(row.original.s_date, 'YYYYMMDDHHmmss').format(
+          'MMM D, Y HH:mm'
         )}`;
       },
     },

@@ -1,11 +1,11 @@
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import axiosClient from "../../api/axiosClient";
-import { useLoader } from "../../context/PageLoaderContext";
-import { useLocation } from "react-router-dom";
-import EquipmentSlots from "../../components/inventory/EquipmentSlots";
-import InventorySlots from "../../components/inventory/InventorySlots";
-import getInventoryItems from "../../helpers/inventorySlotHelper";
+import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import axiosClient from '../../api/axiosClient';
+import { useLoader } from '../../context/PageLoaderContext';
+import { useLocation } from 'react-router-dom';
+import EquipmentSlots from '../../components/inventory/EquipmentSlots';
+import InventorySlots from '../../components/inventory/InventorySlots';
+import getInventoryItems from '../../helpers/inventorySlotHelper';
 
 type InventoryItem = {
   slotIndex: number;
@@ -39,7 +39,7 @@ const defaultInventoryData = {
 const ViewCharacterInventory: React.FC = () => {
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
-  const idPlayer = urlParams.get("id") || "";
+  const idPlayer = urlParams.get('id') || '';
   const form = useForm<{ m_idPlayer: string }>({
     defaultValues: { m_idPlayer: idPlayer },
   });
@@ -83,7 +83,8 @@ const ViewCharacterInventory: React.FC = () => {
         equipment: res.data.result.equipment || [],
       });
     } catch (err) {
-      setError("Character not found or failed to fetch inventory.");
+      console.error(err);
+      setError('Character not found or failed to fetch inventory.');
       setInventoryData(defaultInventoryData);
     } finally {
       setLoading(false);
@@ -105,10 +106,9 @@ const ViewCharacterInventory: React.FC = () => {
 
   useEffect(() => {
     if (idPlayer) {
-      form.setValue("m_idPlayer", idPlayer);
+      form.setValue('m_idPlayer', idPlayer);
       onSubmit({ m_idPlayer: idPlayer }, showBackpack, showBank);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idPlayer]);
 
   return (
@@ -116,14 +116,14 @@ const ViewCharacterInventory: React.FC = () => {
       <header className="text-center">
         <h1 className="text-3xl font-bold text-brand">View Player Inventory</h1>
         <p className="mt-2 text-gray-600">
-          View and explore player's inventory
+          {`View and explore player's inventory`}
         </p>
       </header>
       <form
         onSubmit={form.handleSubmit((data) => {
           const newParams = new URLSearchParams(location.search);
-          newParams.set("id", data.m_idPlayer);
-          window.history.replaceState(null, "", `?${newParams.toString()}`);
+          newParams.set('id', data.m_idPlayer);
+          window.history.replaceState(null, '', `?${newParams.toString()}`);
 
           onSubmit(data, showBackpack, showBank);
         })}
@@ -136,7 +136,7 @@ const ViewCharacterInventory: React.FC = () => {
           <div className="flex gap-2">
             <input
               type="text"
-              {...form.register("m_idPlayer", { required: true })}
+              {...form.register('m_idPlayer', { required: true })}
               className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-brand  borded-text text-text"
             />
             <button
@@ -144,7 +144,7 @@ const ViewCharacterInventory: React.FC = () => {
               className="bg-brand text-white px-4 py-2 rounded hover:opacity-90"
               disabled={loading}
             >
-              {loading ? "Searching..." : "Search"}
+              {loading ? 'Searching...' : 'Search'}
             </button>
           </div>
           <div className="mt-2 flex flex-row gap-x-4">
@@ -198,21 +198,21 @@ const ViewCharacterInventory: React.FC = () => {
         <div className="flex-1 space-y-2 ">
           {/* Main Equipment */}
           <EquipmentSlots
-            items={getInventoryItems("MAIN_EQUIPMENT")}
+            items={getInventoryItems('MAIN_EQUIPMENT')}
             title="Main Equipment"
             equipmentBySlot={equipmentBySlot}
           />
 
           {/* Costume */}
           <EquipmentSlots
-            items={getInventoryItems("COSTUME")}
+            items={getInventoryItems('COSTUME')}
             title="Costumes"
             equipmentBySlot={equipmentBySlot}
           />
 
           {/* Accessories */}
           <EquipmentSlots
-            items={getInventoryItems("ACCESSORIES")}
+            items={getInventoryItems('ACCESSORIES')}
             title="Accessories"
             equipmentBySlot={equipmentBySlot}
           />
@@ -225,9 +225,9 @@ const ViewCharacterInventory: React.FC = () => {
 
         {showBackpack && (
           <div className="w-full gap-4 flex flex-col lg:flex-row items-stretch justify-center">
-            {renderBackpack("Backpack 1", backpack1, 6)}
-            {renderBackpack("Bag 1", backpack2)}
-            {renderBackpack("Bag 2", backpack3)}
+            {renderBackpack('Backpack 1', backpack1, 6)}
+            {renderBackpack('Bag 1', backpack2)}
+            {renderBackpack('Bag 2', backpack3)}
           </div>
         )}
       </div>

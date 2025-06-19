@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import {  useRef, useState, type RefObject } from "react";
 import type { InventoryItem } from "../types/InventoryItemType";
 
 export type UseItemTooltipReturn = {
@@ -63,7 +63,6 @@ const useItemTooltip = (): UseItemTooltipReturn => {
   };
 
   const handleClickOutside = (elementId?: string) => {
-    console.log(elementId);
     const listener = (e: Event) => {
       const mouseEvent = e as MouseEvent;
       if (

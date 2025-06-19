@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
@@ -9,11 +9,11 @@ const NotFound: React.FC = () => {
       <div className="bg-white rounded-lg p-10">
         <h1 className="text-6xl font-extrabold text-brand mb-4">404</h1>
         <p className="text-xl text-muted mb-8">
-          Oops! The page you're looking for doesn't exist.
+          {`Oops! The page you're looking for doesn't exist.`}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
             className="bg-secondary hover:bg-yellow-400 cursor-pointer text-text font-bold px-6 py-3 rounded-lg transition duration-150"
           >
             Return Home

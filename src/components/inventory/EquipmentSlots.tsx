@@ -17,7 +17,6 @@ const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
   equipmentBySlot,
 }) => {
   const { handleItemSlotClick } = useItemTooltip();
-  console.log(title, items);
   return (
     <div>
       <h3 className="font-semibold mb-1 text-brand">{title}</h3>

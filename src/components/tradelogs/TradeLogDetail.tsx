@@ -13,7 +13,6 @@ const TradeLogDetail: React.FC<TradeLogType> = (tradeDetail) => {
     (item) => item.idPlayer === player2.idPlayer
   );
 
-  console.log(player1Items);
   return (
     <div
       id="tradeLogWindow"

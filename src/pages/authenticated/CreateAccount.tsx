@@ -1,7 +1,7 @@
-import React from "react";
-import { useMutation } from "@tanstack/react-query";
-import axiosClient from "../../api/axiosClient";
-import { useForm } from "react-hook-form";
+import React from 'react';
+import { useMutation } from '@tanstack/react-query';
+import axiosClient from '../../api/axiosClient';
+import { useForm } from 'react-hook-form';
 
 type CreateAccountForm = {
   account: string;
@@ -20,14 +20,14 @@ const CreateAccount: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: (data: CreateAccountForm) =>
-      axiosClient.post("/auth/accounts/create", data),
+      axiosClient.post('/auth/accounts/create', data),
     onSuccess: () => {
-      alert("Account created successfully!");
+      alert('Account created successfully!');
       reset();
     },
-    onError: (error: any) => {
+    onError: (error: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       alert(
-        error?.response?.data?.message || "Failed to create account. Try again."
+        error?.response?.data?.message || 'Failed to create account. Try again.'
       );
     },
   });
@@ -48,7 +48,7 @@ const CreateAccount: React.FC = () => {
           <label className="block font-medium text-text">Account Name</label>
           <input
             type="text"
-            {...register("account", { required: "Account is required" })}
+            {...register('account', { required: 'Account is required' })}
             className="w-full border border-text text-text px-4 py-2 rounded"
           />
           {errors.account && (
@@ -62,7 +62,7 @@ const CreateAccount: React.FC = () => {
           <label className="block font-medium text-text">Password</label>
           <input
             type="password"
-            {...register("password", { required: "Password is required" })}
+            {...register('password', { required: 'Password is required' })}
             className="w-full border border-text text-text px-4 py-2 rounded"
           />
           {errors.password && (
@@ -76,16 +76,18 @@ const CreateAccount: React.FC = () => {
           <label className="block font-medium text-text">Cash (Optional)</label>
           <input
             type="number"
-            {...register("cash")}
+            {...register('cash')}
             className="w-full border border-text text-text px-4 py-2 rounded"
           />
         </div>
 
         <div>
-          <label className="block font-medium text-text">Email (Optional)</label>
+          <label className="block font-medium text-text">
+            Email (Optional)
+          </label>
           <input
             type="email"
-            {...register("email")}
+            {...register('email')}
             className="w-full border border-text text-text px-4 py-2 rounded"
           />
         </div>
@@ -95,7 +97,7 @@ const CreateAccount: React.FC = () => {
           disabled={mutation.isPending}
           className="w-full bg-brand text-white py-2 rounded hover:bg-brand-dark transition"
         >
-          {mutation.isPending ? "Creating..." : "Create Account"}
+          {mutation.isPending ? 'Creating...' : 'Create Account'}
         </button>
       </form>
     </div>

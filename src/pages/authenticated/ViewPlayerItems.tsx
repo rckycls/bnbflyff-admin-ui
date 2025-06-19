@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import type { ColumnDef, SortingState } from "@tanstack/react-table";
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import type { ColumnDef, SortingState } from '@tanstack/react-table';
 
-import axiosClient from "../../api/axiosClient";
-import { useLoader } from "../../context/PageLoaderContext";
-import type { ItemLogType } from "../../types/ItemLogType";
-import DataTable from "../../components/ui/DataTable";
-import { useItemTooltip } from "../../context/ItemTooltipContext";
-import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
+import axiosClient from '../../api/axiosClient';
+import { useLoader } from '../../context/PageLoaderContext';
+import type { ItemLogType } from '../../types/ItemLogType';
+import DataTable from '../../components/ui/DataTable';
+import { useItemTooltip } from '../../context/ItemTooltipContext';
+import { HiMiniArrowTopRightOnSquare } from 'react-icons/hi2';
 
 type PlayerItemsResponse = {
   success: boolean;
@@ -34,10 +34,10 @@ const fetchItems = async (
 ): Promise<PlayerItemsResponse> => {
   const sortParam =
     sorting.length > 0
-      ? `${sorting[0].id}:${sorting[0].desc ? "desc" : "asc"}`
+      ? `${sorting[0].id}:${sorting[0].desc ? 'desc' : 'asc'}`
       : undefined;
 
-  const { data } = await axiosClient.get("/auth/items", {
+  const { data } = await axiosClient.get('/auth/items', {
     params: { page, limit, ...search, sort: sortParam },
   });
 
@@ -47,7 +47,7 @@ const fetchItems = async (
 const ViewPlayerItems: React.FC = () => {
   const navigate = useNavigate();
   const { handleItemSlotClick } = useItemTooltip();
-  const form = useForm<{ itemId: string }>({ defaultValues: { itemId: "" } });
+  const form = useForm<{ itemId: string }>({ defaultValues: { itemId: '' } });
 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -60,12 +60,12 @@ const ViewPlayerItems: React.FC = () => {
   const { loading, setLoading } = useLoader();
   const location = useLocation();
 
-  const itemId = new URLSearchParams(location.search).get("id") || "";
+  const itemId = new URLSearchParams(location.search).get('id') || '';
 
   const { data, isLoading, isFetching, isError } =
     useQuery<PlayerItemsResponse>({
       queryKey: [
-        "items",
+        'items',
         globalFilter?.itemId,
         pagination.pageIndex,
         pagination.pageSize,
@@ -88,22 +88,22 @@ const ViewPlayerItems: React.FC = () => {
 
   const columns: ColumnDef<ItemLogType>[] = [
     {
-      accessorKey: "source",
-      header: "Source",
+      accessorKey: 'source',
+      header: 'Source',
       cell: ({ row }) => {
         const { source, ContainerID } = row.original;
-        let bgColor = "bg-success";
+        let bgColor = 'bg-success';
         let sourceName = source;
-        if (source === "POCKET") {
-          bgColor = "bg-secondary";
+        if (source === 'POCKET') {
+          bgColor = 'bg-secondary';
 
-          if (ContainerID != "0") {
-            sourceName = "Bag " + ContainerID;
+          if (ContainerID != '0') {
+            sourceName = 'Bag ' + ContainerID;
           } else {
-            sourceName = "Backpack";
+            sourceName = 'Backpack';
           }
-        } else if (source === "BANK") {
-          bgColor = "bg-muted";
+        } else if (source === 'BANK') {
+          bgColor = 'bg-muted';
         }
         return (
           <div
@@ -115,8 +115,8 @@ const ViewPlayerItems: React.FC = () => {
       },
     },
     {
-      accessorKey: "CharacterName",
-      header: "Player",
+      accessorKey: 'CharacterName',
+      header: 'Player',
       cell: ({ row }) => {
         const { m_idPlayer, CharacterName } = row.original;
 
@@ -128,7 +128,7 @@ const ViewPlayerItems: React.FC = () => {
             <button
               className="cursor-pointer text-brand"
               onClick={() => {
-                navigate("/characters/inventory?id=" + m_idPlayer);
+                navigate('/characters/inventory?id=' + m_idPlayer);
               }}
               rel="noopener noreferrer"
             >
@@ -139,8 +139,8 @@ const ViewPlayerItems: React.FC = () => {
       },
     },
     {
-      accessorKey: "actions",
-      header: "Details",
+      accessorKey: 'actions',
+      header: 'Details',
       cell: ({ row }) => {
         const { items } = row.original;
         return (
@@ -176,10 +176,9 @@ const ViewPlayerItems: React.FC = () => {
 
   useEffect(() => {
     if (itemId) {
-      form.setValue("itemId", itemId);
+      form.setValue('itemId', itemId);
       onSubmit({ itemId });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId]);
 
   return (
@@ -187,15 +186,15 @@ const ViewPlayerItems: React.FC = () => {
       <header className="text-center">
         <h1 className="text-3xl font-bold text-brand">View Items</h1>
         <p className="mt-2 text-gray-600">
-          View specific items from player's inventory.
+          {`View specific items from player's inventory.`}
         </p>
       </header>
 
       <form
         onSubmit={form.handleSubmit((data) => {
           const newParams = new URLSearchParams(location.search);
-          newParams.set("id", data.itemId);
-          window.history.replaceState(null, "", `?${newParams.toString()}`);
+          newParams.set('id', data.itemId);
+          window.history.replaceState(null, '', `?${newParams.toString()}`);
           onSubmit(data);
         })}
         className="space-y-4"
@@ -207,7 +206,7 @@ const ViewPlayerItems: React.FC = () => {
           <div className="flex gap-2">
             <input
               type="text"
-              {...form.register("itemId", { required: true })}
+              {...form.register('itemId', { required: true })}
               className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-brand borded-text text-text"
             />
             <button
@@ -215,7 +214,7 @@ const ViewPlayerItems: React.FC = () => {
               className="bg-brand text-white px-4 py-2 rounded hover:opacity-90"
               disabled={loading}
             >
-              {loading ? "Searching..." : "Search"}
+              {loading ? 'Searching...' : 'Search'}
             </button>
           </div>
           <div className="mt-2 flex gap-x-4">

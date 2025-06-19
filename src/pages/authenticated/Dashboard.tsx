@@ -1,36 +1,5 @@
-import React from "react";
-import { FaArrowRight } from "react-icons/fa6";
-import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Legend,
-} from "recharts";
-
-const playerActivityData = [
-  { day: "Mon", players: 120 },
-  { day: "Tue", players: 98 },
-  { day: "Wed", players: 150 },
-  { day: "Thu", players: 170 },
-  { day: "Fri", players: 200 },
-  { day: "Sat", players: 240 },
-  { day: "Sun", players: 300 },
-];
-
-const voteShopData = [
-  { item: "Sword", votes: 80 },
-  { item: "Shield", votes: 65 },
-  { item: "Potion", votes: 120 },
-  { item: "Helmet", votes: 40 },
-  { item: "Armor", votes: 75 },
-];
+import React from 'react';
+import { HiMiniArrowTopRightOnSquare } from 'react-icons/hi2';
 
 const Dashboard: React.FC = () => {
   return (
