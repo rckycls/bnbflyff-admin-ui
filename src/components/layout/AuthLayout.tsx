@@ -1,71 +1,68 @@
-import { useState, useRef, useEffect } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { FiMenu, FiX, FiHome, FiChevronDown } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
-import iconAccount from "../../assets/icon_account.png";
-import iconCharacter from "../../assets/icon_character.png";
-import iconGuild from "../../assets/icon_guild.png";
-import iconInventory from "../../assets/icon_inventory.png";
-import iconGM from "../../assets/icon_gm.png";
-import { useTheme, type ThemeType } from "../../context/ThemeContext";
-import { FiSun, FiMoon } from "react-icons/fi";
-import { MdAutoAwesome } from "react-icons/md";
+import { useState, useRef, useEffect } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { FiMenu, FiX, FiChevronDown } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import iconAccount from '../../assets/icon_account.png';
+import iconCharacter from '../../assets/icon_character.png';
+import iconGuild from '../../assets/icon_guild.png';
+import iconInventory from '../../assets/icon_inventory.png';
+import iconGM from '../../assets/icon_gm.png';
+import { useTheme, type ThemeType } from '../../context/ThemeContext';
+import { FiSun, FiMoon } from 'react-icons/fi';
+import { MdAutoAwesome } from 'react-icons/md';
 
 const themeOptions = [
-  { value: "light", icon: <FiSun size={14} /> },
-  { value: "dark", icon: <FiMoon size={14} /> },
-  { value: "classic", icon: <MdAutoAwesome size={14} /> },
+  { value: 'light', icon: <FiSun size={14} /> },
+  { value: 'dark', icon: <FiMoon size={14} /> },
+  { value: 'classic', icon: <MdAutoAwesome size={14} /> },
 ];
 
 const navLinks = [
+  // {
+  //   name: 'Dashboard',
+  //   to: '/dashboard',
+  //   icon: <FiHome />,
+  // },
   {
-    name: "Dashboard",
-    to: "/dashboard",
-    icon: <FiHome />,
-  },
-  {
-    name: "Accounts",
-    to: "/accounts",
+    name: 'Accounts',
+    to: '/accounts',
     icon: <img src={iconAccount} className="w-5 h-5" />,
     submenu: [
-      { name: "Manage Accounts", to: "/accounts" },
-      { name: "Add Account", to: "/accounts/new" },
+      { name: 'Manage Accounts', to: '/accounts' },
+      { name: 'Add Account', to: '/accounts/new' },
     ],
   },
   {
-    name: "Characters",
-    to: "/characters",
+    name: 'Characters',
+    to: '/characters',
     icon: <img src={iconCharacter} className="w-5 h-5" />,
     submenu: [
-      { name: "Character List", to: "/characters" },
-      { name: "View Character Inventory", to: "/characters/inventory" },
+      { name: 'Character List', to: '/characters' },
+      { name: 'View Character Inventory', to: '/characters/inventory' },
     ],
   },
   {
-    name: "Guilds",
-    to: "/guilds",
+    name: 'Guilds',
+    to: '/guilds',
     icon: <img src={iconGuild} className="w-5 h-5" />,
-    submenu: [
-      { name: "Character List", to: "/guilds" },
-      { name: "View Character Inventory", to: "/guilds/inventory" },
-    ],
+    submenu: [{ name: 'Guild List', to: '/guilds' }],
   },
   {
-    name: "Items",
-    to: "/items",
+    name: 'Items',
+    to: '/items',
     icon: <img src={iconInventory} className="w-5 h-5" />,
     submenu: [
-      { name: "Player Items", to: "/items" },
-      { name: "Trade Logs", to: "/trade-logs" },
+      { name: 'Player Items', to: '/items' },
+      { name: 'Trade Logs', to: '/trade-logs' },
     ],
   },
   {
-    name: "GM",
-    to: "/gamemasters",
+    name: 'GM',
+    to: '/gamemasters',
     icon: <img src={iconGM} className="w-5 h-5" />,
     submenu: [
-      { name: "Manage Game Masters", to: "/gamemasters" },
-      { name: "Create New GM", to: "/gamemasters/new" },
+      { name: 'Manage Game Masters', to: '/gamemasters' },
+      { name: 'Create New GM', to: '/gamemasters/new' },
     ],
   },
 ];
@@ -79,7 +76,7 @@ const AuthLayout = () => {
     null
   );
   const [submenuPosition, setSubmenuPosition] = useState<
-    Record<string, "left" | "right">
+    Record<string, 'left' | 'right'>
   >({});
 
   const submenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -109,12 +106,12 @@ const AuthLayout = () => {
         if (availableWidth < rect.width + 32) {
           setSubmenuPosition((prev) => ({
             ...prev,
-            [openDesktopDropdown]: "right",
+            [openDesktopDropdown]: 'right',
           }));
         } else {
           setSubmenuPosition((prev) => ({
             ...prev,
-            [openDesktopDropdown]: "left",
+            [openDesktopDropdown]: 'left',
           }));
         }
       }
@@ -135,8 +132,8 @@ const AuthLayout = () => {
                 }
                 className={`inline-flex items-center gap-1 hover:underline focus:outline-none ${
                   location.pathname.startsWith(link.to)
-                    ? "font-semibold underline"
-                    : ""
+                    ? 'font-semibold underline'
+                    : ''
                 }`}
               >
                 {link.icon}
@@ -159,7 +156,7 @@ const AuthLayout = () => {
         bg-white text-black shadow-md rounded-md
         min-w-[12rem] max-w-[calc(100vw-2rem)]
         overflow-x-auto whitespace-nowrap
-        ${submenuPosition[link.name] === "right" ? "right-0" : "left-0"}
+        ${submenuPosition[link.name] === 'right' ? 'right-0' : 'left-0'}
       `}
                   >
                     {link.submenu.map((sub) => (
@@ -183,7 +180,7 @@ const AuthLayout = () => {
           <motion.div
             className="absolute top-0 left-0 h-8 w-[33.33%] rounded-full bg-brand z-0"
             animate={{ x: `${themeIndex * 100}%` }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           />
 
           {themeOptions.map((t) => (
@@ -191,7 +188,7 @@ const AuthLayout = () => {
               key={t.value}
               onClick={() => setTheme(t.value as ThemeType)}
               className={`z-10 w-[33.33%] h-full flex items-center justify-center rounded-full transition-colors duration-200 ${
-                theme === t.value ? "text-white" : "text-muted"
+                theme === t.value ? 'text-white' : 'text-muted'
               }`}
             >
               {t.icon}
@@ -232,7 +229,7 @@ const AuthLayout = () => {
                   {link.submenu && openDropdown === link.name && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
+                      animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       className="pl-4 flex flex-col overflow-hidden"
                     >

@@ -240,21 +240,23 @@ const ViewPlayerItems: React.FC = () => {
         </div>
       </form>
 
-      <DataTable
-        data={data?.result ?? []}
-        columns={columns}
-        totalPages={data?.totalPages ?? 1}
-        pagination={{
-          pageIndex: pagination.pageIndex,
-          pageSize: pagination.pageSize,
-          setPagination,
-        }}
-        sorting={sorting}
-        onSortingChange={setSorting}
-        filterInput={null}
-        isLoading={isLoading || isFetching}
-        isError={isError}
-      />
+      {data?.result && (
+        <DataTable
+          data={data?.result ?? []}
+          columns={columns}
+          totalPages={data?.totalPages ?? 1}
+          pagination={{
+            pageIndex: pagination.pageIndex,
+            pageSize: pagination.pageSize,
+            setPagination,
+          }}
+          sorting={sorting}
+          onSortingChange={setSorting}
+          filterInput={null}
+          isLoading={isLoading || isFetching}
+          isError={isError}
+        />
+      )}
     </div>
   );
 };
