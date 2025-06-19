@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const { loading } = useLoader();
 
   return (
-    <>
+    <div className="text-text">
       {loading && <PageLoader />}
       <Routes>
         <Route path="/" element={<Login />} />
@@ -45,7 +45,7 @@ const App: React.FC = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </div>
   );
 };
 

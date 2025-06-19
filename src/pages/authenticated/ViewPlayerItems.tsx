@@ -208,7 +208,7 @@ const ViewPlayerItems: React.FC = () => {
             <input
               type="text"
               {...form.register("itemId", { required: true })}
-              className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-brand"
+              className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-brand borded-text text-text"
             />
             <button
               type="submit"

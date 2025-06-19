@@ -93,7 +93,7 @@ function DataTable<TData>({
             .map((column) => (
               <label
                 key={column.id}
-                className="flex items-center gap-2 text-sm"
+                className="flex items-center gap-2 text-sm text-text"
               >
                 <input
                   type="checkbox"
@@ -110,7 +110,7 @@ function DataTable<TData>({
       ) : (
         <>
           {/* Table for medium and up */}
-          <div className="overflow-x-auto rounded-xl shadow-md border border-gray-200">
+          <div className="overflow-x-auto rounded-xl shadow-md border border-accent-blue">
             <table className="hidden sm:table w-full text-left">
               <thead className="bg-brand text-surface rounded-t-lg">
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -144,7 +144,7 @@ function DataTable<TData>({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className={`px-2 py-1 sm:px-4 sm:py-2 whitespace-normal break-words ${
+                        className={`px-2 py-1 sm:px-4 sm:py-2 whitespace-normal break-words text-text ${
                           index + 1 < table.getRowModel().rows.length
                             ? "border-b border-b-muted"
                             : ""
@@ -162,7 +162,7 @@ function DataTable<TData>({
             </table>
           </div>
           {table.getRowModel().rows.length <= 0 && (
-            <div className="text-center text-gray-500 py-10">
+            <div className="text-center text-text py-10">
               <p className="text-sm">No data available</p>
             </div>
           )}
@@ -190,7 +190,7 @@ function DataTable<TData>({
                     >
                       {key !== 0 ? (
                         <>
-                          <div className="text-xs font-bold text-gray-500 px-2">
+                          <div className="text-xs font-bold text-text px-2">
                             {typeof header === "function"
                               ? String(cell.column.columnDef.header)
                               : header}

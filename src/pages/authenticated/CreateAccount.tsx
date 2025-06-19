@@ -45,11 +45,11 @@ const CreateAccount: React.FC = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block font-medium">Account Name</label>
+          <label className="block font-medium text-text">Account Name</label>
           <input
             type="text"
             {...register("account", { required: "Account is required" })}
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-text text-text px-4 py-2 rounded"
           />
           {errors.account && (
             <p className="text-red-500 text-sm mt-1">
@@ -59,11 +59,11 @@ const CreateAccount: React.FC = () => {
         </div>
 
         <div>
-          <label className="block font-medium">Password</label>
+          <label className="block font-medium text-text">Password</label>
           <input
             type="password"
             {...register("password", { required: "Password is required" })}
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-text text-text px-4 py-2 rounded"
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">
@@ -73,20 +73,20 @@ const CreateAccount: React.FC = () => {
         </div>
 
         <div>
-          <label className="block font-medium">Cash (Optional)</label>
+          <label className="block font-medium text-text">Cash (Optional)</label>
           <input
             type="number"
             {...register("cash")}
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-text text-text px-4 py-2 rounded"
           />
         </div>
 
         <div>
-          <label className="block font-medium">Email (Optional)</label>
+          <label className="block font-medium text-text">Email (Optional)</label>
           <input
             type="email"
             {...register("email")}
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-text text-text px-4 py-2 rounded"
           />
         </div>
 

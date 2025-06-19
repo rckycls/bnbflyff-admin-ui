@@ -163,19 +163,19 @@ const ViewTradeLogs: React.FC = () => {
       <input
         type="text"
         placeholder="Player ID"
-        className="px-4 py-2 border rounded max-w-full md:max-w-[160px]"
+        className="px-4 py-2 border rounded max-w-full md:max-w-[160px] borded-text text-text"
         onChange={(e) => debouncedSearch("idPlayer1", e.target.value)}
       />
       <input
         type="text"
         placeholder="Player ID"
-        className="px-4 py-2 border rounded max-w-full md:max-w-[160px]"
+        className="px-4 py-2 border rounded max-w-full md:max-w-[160px] borded-text text-text"
         onChange={(e) => debouncedSearch("idPlayer2", e.target.value)}
       />
       <input
         type="text"
         placeholder="Item ID"
-        className="px-4 py-2 border rounded max-w-full md:max-w-[160px]"
+        className="px-4 py-2 border rounded max-w-full md:max-w-[160px] borded-text text-text"
         onChange={(e) => debouncedSearch("ItemIndex", e.target.value)}
       />
     </div>

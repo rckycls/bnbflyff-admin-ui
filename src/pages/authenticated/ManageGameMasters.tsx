@@ -150,7 +150,7 @@ const ManageGameMasters: React.FC = () => {
                 log && (
                   <div
                     key={`log_gm_${Math.floor(Math.random() * 10000)}-${index}`}
-                    className="flex flex-row text-xs gap-x-1 rounded-lg text-black"
+                    className="flex flex-row text-xs gap-x-1 rounded-lg text-text"
                   >
                     <h1 className="font-semibold">{log.m_szWords}</h1>
                     <h2 className="text-muted">
@@ -191,7 +191,7 @@ const ManageGameMasters: React.FC = () => {
     <input
       type="text"
       placeholder="Search characters..."
-      className="px-4 py-2 border rounded"
+      className="px-4 py-2 border rounded borded-text text-text"
       onChange={(e) => debouncedSearch(e.target.value)}
     />
   );

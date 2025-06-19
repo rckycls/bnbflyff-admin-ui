@@ -31,7 +31,7 @@ const InventoryTooltip: React.FC<InventoryTooltipType> = ({
     <div
       key={`inventory-tooltip-${Math.floor(Math.random() * 10000)}`}
       ref={tooltipRef}
-      className="absolute z-100 bg-white border border-brand rounded shadow-lg p-2 text-sm max-w-xs w-50 overflow-auto animate-fade-in-scale"
+      className="absolute z-100 bg-surface text-text border border-brand rounded shadow-lg p-2 text-sm max-w-xs w-50 overflow-auto animate-fade-in-scale"
       style={{
         top: tooltipPosition.y,
         left: tooltipPosition.x,

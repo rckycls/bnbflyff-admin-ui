@@ -102,14 +102,11 @@ const GMLogsModal: React.FC<{ gmId: string }> = ({ gmId }) => {
     <input
       type="text"
       placeholder="Search commands..."
-      className="px-4 py-2 border rounded"
+      className="px-4 py-2 border border-text text-text rounded"
       onChange={(e) => debouncedSearch(e.target.value)}
     />
   );
 
-  useEffect(() => {
-    console.log("gmId", gmId);
-  }, [gmId]);
   return (
     <div className="flex flex-col items-center justify-between w-full rounded-lg p-2">
       <DataTable

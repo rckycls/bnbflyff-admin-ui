@@ -8,6 +8,16 @@ import iconCharacter from "../../assets/icon_character.png";
 import iconGuild from "../../assets/icon_guild.png";
 import iconInventory from "../../assets/icon_inventory.png";
 import iconGM from "../../assets/icon_gm.png";
+import { BsSunFill, BsMoonStarsFill, BsPalette } from "react-icons/bs";
+import { useTheme, type ThemeType } from "../../context/ThemeContext";
+import { FiSun, FiMoon } from "react-icons/fi";
+import { MdAutoAwesome } from "react-icons/md";
+
+const themeOptions = [
+  { value: "light", icon: <FiSun size={14} /> },
+  { value: "dark", icon: <FiMoon size={14} /> },
+  { value: "classic", icon: <MdAutoAwesome size={14} /> },
+];
 
 const navLinks = [
   {
@@ -63,6 +73,8 @@ const navLinks = [
 ];
 
 const AuthLayout = () => {
+  const { theme, setTheme } = useTheme();
+  const themeIndex = themeOptions.findIndex((t) => t.value === theme);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(
@@ -113,11 +125,9 @@ const AuthLayout = () => {
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      {/* Header */}
       <header className="sticky top-0 z-50 bg-brand text-white px-4 py-3 shadow-md flex justify-between items-center">
         <h1 className="text-xl font-bold">FlyFF Admin</h1>
 
-        {/* Desktop nav */}
         <nav className="space-x-6 hidden sm:flex items-center relative">
           {navLinks.map((link) => (
             <div key={link.name} className="relative">
@@ -171,7 +181,25 @@ const AuthLayout = () => {
           ))}
         </nav>
 
-        {/* Mobile hamburger */}
+        <div className="relative w-[100px] h-8 bg-surface border border-muted rounded-full flex items-center justify-between px-1 shadow-md overflow-hidden">
+          <motion.div
+            className="absolute top-0 left-0 h-8 w-[33.33%] rounded-full bg-brand z-0"
+            animate={{ x: `${themeIndex * 100}%` }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          />
+
+          {themeOptions.map((t) => (
+            <button
+              key={t.value}
+              onClick={() => setTheme(t.value as ThemeType)}
+              className={`z-10 w-[33.33%] h-full flex items-center justify-center rounded-full transition-colors duration-200 ${
+                theme === t.value ? "text-white" : "text-muted"
+              }`}
+            >
+              {t.icon}
+            </button>
+          ))}
+        </div>
         <div className="sm:hidden">
           <button onClick={toggleMenu} aria-label="Toggle Menu">
             {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}

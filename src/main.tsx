@@ -8,21 +8,24 @@ import { BrowserRouter } from "react-router-dom";
 import { PageLoaderProvider } from "./context/PageLoaderContext.tsx";
 import { ModalProvider } from "./context/ModalContext.tsx";
 import { ItemTooltipProvider } from "./context/ItemTooltipContext.tsx";
+import { ThemeProvider } from "./context/ThemeContext.tsx";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <PageLoaderProvider>
-          <ItemTooltipProvider>
-            <ModalProvider>
-              <AuthProvider>
-                <App />
-              </AuthProvider>
-            </ModalProvider>
-          </ItemTooltipProvider>
-        </PageLoaderProvider>
+        <ThemeProvider>
+          <PageLoaderProvider>
+            <ItemTooltipProvider>
+              <ModalProvider>
+                <AuthProvider>
+                  <App />
+                </AuthProvider>
+              </ModalProvider>
+            </ItemTooltipProvider>
+          </PageLoaderProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>

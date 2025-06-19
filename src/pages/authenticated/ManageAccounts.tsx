@@ -120,7 +120,7 @@ const ManageAccounts: React.FC = () => {
     <input
       type="text"
       placeholder="Search accounts..."
-      className="px-4 py-2 border rounded"
+      className="px-4 py-2 border rounded borded-text text-text"
       onChange={(e) => debouncedSearch(e.target.value)}
     />
   );
