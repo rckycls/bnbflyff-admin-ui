@@ -46,9 +46,9 @@ const Dashboard: React.FC = () => {
       {/* Main grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Graph Cards */}
-        <div className="col-span-1 xl:col-span-2 space-y-4">
-          {/* Player Activity Line Chart */}
-          <div className="bg-white rounded-2xl shadow p-4">
+        {/* <div className="col-span-1 xl:col-span-2 space-y-4"> */}
+        {/* Player Activity Line Chart */}
+        {/* <div className="bg-white rounded-2xl shadow p-4">
             <h2 className="text-xl font-semibold text-brand">
               Player Activity (Last 7 Days)
             </h2>
@@ -69,10 +69,10 @@ const Dashboard: React.FC = () => {
                 </LineChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </div> */}
 
-          {/* Vote Shop Bar Chart */}
-          <div className="bg-white rounded-2xl shadow p-4">
+        {/* Vote Shop Bar Chart */}
+        {/* <div className="bg-white rounded-2xl shadow p-4">
             <h2 className="text-xl font-semibold text-brand">
               Vote Shop Engagement
             </h2>
@@ -96,8 +96,8 @@ const Dashboard: React.FC = () => {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
 
         {/* Status Cards */}
         <div className="space-y-4">
@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
             </ul>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-4">
+          {/* <div className="bg-white rounded-2xl shadow p-4">
             <h2 className="text-xl font-semibold text-brand mb-2">
               Recent Activity
             </h2>
@@ -140,12 +140,12 @@ const Dashboard: React.FC = () => {
               <li>📥 Patch 1.2.3 deployed</li>
               <li>⚠️ Warning: Low disk space on Server B</li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* News Section */}
-      <section className="bg-white rounded-2xl shadow p-6">
+      {/* <section className="bg-white rounded-2xl shadow p-6">
         <h2 className="text-2xl font-semibold text-brand mb-4">
           News & Announcements
         </h2>
@@ -171,7 +171,7 @@ const Dashboard: React.FC = () => {
             </p>
           </li>
         </ul>
-      </section>
+      </section> */}
     </div>
   );
 };
