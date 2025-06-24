@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axiosClient from '../../api/axiosClient';
-import InventorySlots from '../../components/inventory/InventorySlots';
 import { isAxiosError } from 'axios';
 import type { InventoryItem } from '../../types/InventoryItemType';
 import { useLoader } from '../../context/PageLoaderContext';
@@ -27,6 +26,7 @@ const GuildBankModal: React.FC<GuildBankModalProps> = ({ id }) => {
       setLoading(false);
       return res.data.result as InventoryItem[];
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     retry: (count, error: any) => {
       if (isAxiosError(error) && error.response?.status === 404) {
         setLoading(false);

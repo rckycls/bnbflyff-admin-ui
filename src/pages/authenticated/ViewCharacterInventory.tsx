@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import EquipmentSlots from '../../components/inventory/EquipmentSlots';
 import InventorySlots from '../../components/inventory/InventorySlots';
 import getInventoryItems from '../../helpers/inventorySlotHelper';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useLoader } from '../../context/PageLoaderContext';
 import debounce from 'lodash/debounce';
 import { isAxiosError } from 'axios';
@@ -42,7 +42,6 @@ const defaultInventoryData = {
 const ViewCharacterInventory: React.FC = () => {
   const { setLoading } = useLoader();
   const location = useLocation();
-  const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(location.search);
   const idPlayer = urlParams.get('id') || '';
   const [fetchedPlayerIds, setFetchedPlayerIds] = useState<Set<string>>(
@@ -67,6 +66,7 @@ const ViewCharacterInventory: React.FC = () => {
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       setLoading(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const params: any = {};
       if (showBank) params.showBank = 1;
       if (showBackpack) params.showBackpack = 1;
@@ -78,6 +78,7 @@ const ViewCharacterInventory: React.FC = () => {
       setLoading(false);
       return res.data.result;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     retry: (failCount, error: any) => {
       if (isAxiosError(error) && error.response?.status === 404) {
         setLoading(false);
@@ -135,7 +136,7 @@ const ViewCharacterInventory: React.FC = () => {
       <header className="text-center">
         <h1 className="text-3xl font-bold text-brand">View Player Inventory</h1>
         <p className="mt-2 text-gray-600">
-          View and explore player's inventory
+          {"View and explore player's inventory"}
         </p>
       </header>
 
