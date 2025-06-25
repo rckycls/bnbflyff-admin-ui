@@ -1,24 +1,19 @@
-import React from "react";
+import React from 'react';
 import type {
   ColumnDef,
   VisibilityState,
   SortingState,
-} from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
-import axiosClient from "../../api/axiosClient";
-import { debounce } from "lodash";
-import DataTable from "../../components/ui/DataTable";
+} from '@tanstack/react-table';
+import { useQuery } from '@tanstack/react-query';
+import axiosClient from '../../api/axiosClient';
+import { debounce } from 'lodash';
+import DataTable from '../../components/ui/DataTable';
 
 type Account = {
   account: string;
-  password: string;
   isuse: string;
-  id: number;
-  realname?: string;
-  email?: string;
-  created_at?: string;
-  updated_at?: string;
-  // Add more fields if needed
+  regdate: number;
+  BlockTime?: string;
 };
 
 type AccountsResponse = {
@@ -37,10 +32,10 @@ const fetchAccounts = async (
   sorting: SortingState
 ): Promise<AccountsResponse> => {
   const sortParam = sorting.length
-    ? `${sorting[0].id} ${sorting[0].desc ? "desc" : "asc"}`
+    ? `${sorting[0].id} ${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
-  const res = await axiosClient.get("/auth/accounts", {
+  const res = await axiosClient.get('/auth/accounts', {
     params: { page, limit, search, sort: sortParam },
   });
   return res.data;
@@ -49,12 +44,8 @@ const fetchAccounts = async (
 const defaultColumnVisibility: VisibilityState = {
   account: true,
   isuse: true,
-  password: false,
-  id: false,
-  realname: false,
-  email: false,
-  created_at: false,
-  updated_at: false,
+  regdate: true,
+  BlockTime: false,
 };
 
 const ManageAccounts: React.FC = () => {
@@ -62,14 +53,14 @@ const ManageAccounts: React.FC = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [globalFilter, setGlobalFilter] = React.useState('');
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const { data, isLoading, isError } = useQuery<AccountsResponse>({
     queryKey: [
-      "accounts",
+      'accounts',
       pagination.pageIndex,
       pagination.pageSize,
       globalFilter,
@@ -87,23 +78,23 @@ const ManageAccounts: React.FC = () => {
   });
 
   const columns: ColumnDef<Account>[] = [
-    { accessorKey: "account", header: "Account" },
-    { accessorKey: "isuse", header: "Status" },
-    { accessorKey: "password", header: "Password" },
-    { accessorKey: "id", header: "ID" },
-    { accessorKey: "realname", header: "Real Name" },
-    { accessorKey: "email", header: "Email" },
+    { accessorKey: 'account', header: 'Account' },
+    { accessorKey: 'isuse', header: 'Status' },
     {
-      accessorKey: "created_at",
-      header: "Created At",
+      accessorKey: 'regdate',
+      header: 'Registered At',
       cell: ({ getValue }) =>
-        getValue() ? new Date(getValue() as string).toLocaleString() : "",
+        getValue() ? new Date(getValue() as string).toLocaleString() : '',
     },
     {
-      accessorKey: "updated_at",
-      header: "Updated At",
-      cell: ({ getValue }) =>
-        getValue() ? new Date(getValue() as string).toLocaleString() : "",
+      accessorKey: 'BlockTime',
+      header: 'Blocked At',
+      cell: ({ row }) => {
+        const { BlockTime } = row.original;
+        return BlockTime?.trim() === '0'
+          ? '-'
+          : new Date(BlockTime as string).toLocaleString();
+      },
     },
   ];
 
