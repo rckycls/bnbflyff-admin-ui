@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import type { InventoryItem } from "../../types/InventoryItemType";
-import { FaCheckCircle, FaCopy } from "react-icons/fa";
-import { PiEmptyFill } from "react-icons/pi";
+import React, { useState } from 'react';
+import type { InventoryItem } from '../../types/InventoryItemType';
+import { FaCheckCircle, FaCopy } from 'react-icons/fa';
+import { PiEmptyFill } from 'react-icons/pi';
 
 type InventoryTooltipType = {
   tooltipRef: React.RefObject<HTMLDivElement | null>;
@@ -35,11 +35,11 @@ const InventoryTooltip: React.FC<InventoryTooltipType> = ({
       style={{
         top: tooltipPosition.y,
         left: tooltipPosition.x,
-        wordWrap: "break-word",
+        wordWrap: 'break-word',
       }}
     >
       <div className="font-bold text-brand">
-        {tooltipItem?.displayName}{" "}
+        {tooltipItem?.displayName}{' '}
         {tooltipItem?.enhancement &&
           tooltipItem?.enhancement > 0 &&
           `+${tooltipItem?.enhancement}`}
@@ -72,7 +72,8 @@ const InventoryTooltip: React.FC<InventoryTooltipType> = ({
       {/* Item stats */}
       {[tooltipItem?.stat1, tooltipItem?.stat2, tooltipItem?.stat3].map(
         (stat, index) =>
-          !!stat && (
+          !!stat &&
+          !!stat.value && (
             <div
               key={`item-stat--${Math.floor(Math.random() * 1000)}-${index}`}
               className="text-xs"

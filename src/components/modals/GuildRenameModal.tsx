@@ -31,8 +31,8 @@ const GuildRenameModal: React.FC<GuildRenameProps> = ({
         }
       ),
     onSuccess: () => {
+      closeModal();
       onSuccess();
-      setTimeout(closeModal, 1000);
     },
   });
 

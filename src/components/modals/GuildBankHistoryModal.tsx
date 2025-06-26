@@ -9,29 +9,42 @@ import axiosClient from '../../api/axiosClient';
 import { debounce } from 'lodash';
 import DataTable from '../ui/DataTable';
 import moment from 'moment';
-import type { GuildMemberType } from '../../types/GuildType';
+import type { InventoryItem } from '../../types/InventoryItemType';
+import InventorySlot from '../inventory/InventorySlot';
+import { useItemTooltip } from '../../context/ItemTooltipContext';
 
-type GuildMembersResponse = {
+type GuildBankHistoryType = {
+  m_idPlayer: string;
+  m_szName: string;
+  m_nGuildGold: number;
+  m_Item: number;
+  State: string;
+  s_date: string;
+  Item_count: number;
+  itemDetails?: InventoryItem;
+};
+
+type GuildBankHistoriesResponse = {
   success: boolean;
   page: number;
   limit: number;
   total: number;
   totalPages: number;
-  result: GuildMemberType[];
+  result: GuildBankHistoryType[];
 };
 
-const fetchGuildMembers = async (
+const fetchGuildBankHistories = async (
   page: number,
   limit: number,
   search: string,
   sorting: SortingState,
   id: string
-): Promise<GuildMembersResponse> => {
+): Promise<GuildBankHistoriesResponse> => {
   const sortParam = sorting.length
     ? `${sorting[0].id}:${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
-  const res = await axiosClient.get('/auth/guilds/' + id + '/members', {
+  const res = await axiosClient.get('/auth/guilds/' + id + '/bank-history', {
     params: { page, limit, search, sort: sortParam },
   });
   return res.data;
@@ -40,14 +53,16 @@ const fetchGuildMembers = async (
 const defaultColumnVisibility: VisibilityState = {
   m_idPlayer: false,
   m_szName: true,
-  m_nMemberLv: true,
-  m_szAlias: false,
-  m_nGiveGold: true,
-  m_nGivePxp: true,
-  CreateTime: true,
+  m_nGuildGold: true,
+  m_Item: true,
+  State: true,
+  Item_count: true,
+  s_date: true,
 };
 
 const GuildBankHistoryModal: React.FC<{ id: string }> = ({ id }) => {
+  const { handleItemSlotClick } = useItemTooltip();
+
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
@@ -57,9 +72,9 @@ const GuildBankHistoryModal: React.FC<{ id: string }> = ({ id }) => {
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { data, isLoading, isFetching, isError } =
-    useQuery<GuildMembersResponse>({
+    useQuery<GuildBankHistoriesResponse>({
       queryKey: [
-        'GuildMembers',
+        'GuildBankHistories',
         id,
         pagination.pageIndex,
         pagination.pageSize,
@@ -67,7 +82,7 @@ const GuildBankHistoryModal: React.FC<{ id: string }> = ({ id }) => {
         sorting,
       ],
       queryFn: () =>
-        fetchGuildMembers(
+        fetchGuildBankHistories(
           pagination.pageIndex + 1,
           pagination.pageSize,
           globalFilter,
@@ -78,18 +93,57 @@ const GuildBankHistoryModal: React.FC<{ id: string }> = ({ id }) => {
       staleTime: 5 * 60 * 1000,
     });
 
-  const columns: ColumnDef<GuildMemberType>[] = [
+  const columns: ColumnDef<GuildBankHistoryType>[] = [
     { accessorKey: 'm_idPlayer', header: 'Player ID' },
     { accessorKey: 'm_szName', header: 'Member Name' },
-    { accessorKey: 'm_nMemberLv', header: 'Level' },
-    { accessorKey: 'm_szAlias', header: 'Nickname' },
-    { accessorKey: 'm_nGiveGold', header: 'Penya Contribution' },
-    { accessorKey: 'm_nGivePxp', header: 'Exp Contribution' },
+    { accessorKey: 'm_nGuildGold', header: 'Gold ' },
     {
-      accessorKey: 'CreateTime',
-      header: 'Join Date',
+      accessorKey: 'm_Item',
+      header: 'Item',
       cell: ({ row }) => {
-        return `${moment(row.original.CreateTime, 'YYYYMMDDHHmmss').format(
+        const { m_Item, itemDetails } = row.original;
+
+        return (
+          <div>
+            {itemDetails?.displayName ? (
+              <div className="flex flex-wrap gap-2 rounded-lg">
+                <div
+                  className="h-8 w-8"
+                  onClick={(event) => handleItemSlotClick(itemDetails, event)}
+                >
+                  <img
+                    className="rounded-lg border border-accent-blue"
+                    src={itemDetails.imageFullPath?.toLowerCase()}
+                  />
+                </div>
+              </div>
+            ) : (
+              m_Item
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'State',
+      header: 'Type',
+      cell: ({ row }) => {
+        const { State } = row.original;
+        return (
+          <div
+            className={`px-2 py-1 ${State === 'A' ? 'bg-success/20' : 'bg-danger/20'} text-text text-center rounded-lg text-[10px]`}
+          >
+            {State === 'A' ? 'ADD' : 'TAKE'}
+          </div>
+        );
+      },
+    },
+    { accessorKey: 'Item_count', header: 'Item Count' },
+    {
+      accessorKey: 's_date',
+      header: 'Date',
+      cell: ({ row }) => {
+        return `${moment(row.original.s_date, 'YYYYMMDDHHmmss').format(
           'MMM D, Y HH:mm'
         )}`;
       },

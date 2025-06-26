@@ -8,13 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosClient from '../../api/axiosClient';
 import { debounce } from 'lodash';
 import DataTable from '../../components/ui/DataTable';
-import {
-  FaExchangeAlt,
-  FaEdit,
-  FaTrashAlt,
-  FaGavel,
-  FaScroll,
-} from 'react-icons/fa';
+import { FaExchangeAlt, FaEdit, FaGavel } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { GiNinjaArmor } from 'react-icons/gi';
 import { useModal } from '../../context/ModalContext';

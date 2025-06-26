@@ -80,7 +80,7 @@ const GuildRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
     });
 
   const columns: ColumnDef<ChangeGuildNameLogType>[] = [
-    { accessorKey: 'idGuild', header: 'Player ID' },
+    { accessorKey: 'idGuild', header: 'Guild ID' },
     { accessorKey: 'NewGuildName', header: 'New Guild Name' },
     { accessorKey: 'OldGuildName', header: 'Old Guild Name' },
     {

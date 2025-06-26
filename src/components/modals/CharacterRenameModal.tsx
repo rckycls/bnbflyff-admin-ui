@@ -31,8 +31,8 @@ const CharacterRenameModal: React.FC<CharacterRenameProps> = ({
         }
       ),
     onSuccess: () => {
-      onSuccess();
-      setTimeout(closeModal, 1000);
+      closeModal();
+      setTimeout(onSuccess, 500);
     },
     onError: () => {
       toast.error('Failed to rename character.');
