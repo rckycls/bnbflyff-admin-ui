@@ -9,34 +9,34 @@ import axiosClient from '../../api/axiosClient';
 import DataTable from '../ui/DataTable';
 import moment from 'moment';
 
-type ChangeNameLogType = {
-  idPlayer: string;
-  OldCharName: string;
-  NewCharName: string;
+type ChangeGuildNameLogType = {
+  idGuild: string;
+  OldGuildName: string;
+  NewGuildName: string;
   ChangeDt: string;
 };
 
-type ChangeNameLogsResponse = {
+type ChangeGuildNameLogsResponse = {
   success: boolean;
   page: number;
   limit: number;
   total: number;
   totalPages: number;
-  result: ChangeNameLogType[];
+  result: ChangeGuildNameLogType[];
 };
 
-const fetchChangeNameLogs = async (
+const fetchChangeGuildNameLogs = async (
   page: number,
   limit: number,
   sorting: SortingState,
   id: string
-): Promise<ChangeNameLogsResponse> => {
+): Promise<ChangeGuildNameLogsResponse> => {
   const sortParam = sorting.length
     ? `${sorting[0].id}:${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
   const res = await axiosClient.get(
-    '/auth/characters/' + id + '/change-name-logs',
+    '/auth/guilds/' + id + '/change-name-logs',
     {
       params: { page, limit, sort: sortParam },
     }
@@ -46,12 +46,12 @@ const fetchChangeNameLogs = async (
 
 const defaultColumnVisibility: VisibilityState = {
   idPlayer: true,
-  OldCharName: true,
-  NewCharName: true,
+  OldGuildName: true,
+  NewGuildName: true,
   ChangeDt: true,
 };
 
-const CharacterRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
+const GuildRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
@@ -60,16 +60,16 @@ const CharacterRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { data, isLoading, isFetching, isError, refetch } =
-    useQuery<ChangeNameLogsResponse>({
+    useQuery<ChangeGuildNameLogsResponse>({
       queryKey: [
-        'ChangeNameLogs',
+        'ChangeGuildNameLogs',
         id,
         pagination.pageIndex,
         pagination.pageSize,
         sorting,
       ],
       queryFn: () =>
-        fetchChangeNameLogs(
+        fetchChangeGuildNameLogs(
           pagination.pageIndex + 1,
           pagination.pageSize,
           sorting,
@@ -79,10 +79,10 @@ const CharacterRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
       staleTime: 5 * 60 * 1000,
     });
 
-  const columns: ColumnDef<ChangeNameLogType>[] = [
-    { accessorKey: 'idPlayer', header: 'Player ID' },
-    { accessorKey: 'NewCharName', header: 'New Character Name' },
-    { accessorKey: 'OldCharName', header: 'Old Character Name' },
+  const columns: ColumnDef<ChangeGuildNameLogType>[] = [
+    { accessorKey: 'idGuild', header: 'Player ID' },
+    { accessorKey: 'NewGuildName', header: 'New Guild Name' },
+    { accessorKey: 'OldGuildName', header: 'Old Guild Name' },
     {
       accessorKey: 'ChangeDt',
       header: 'Change Date',
@@ -97,7 +97,7 @@ const CharacterRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
   useEffect(() => {
     refetch();
   }, [id]);
-
+  
   return (
     <div className="flex flex-col items-center justify-between w-full rounded-lg p-2">
       <DataTable
@@ -122,4 +122,4 @@ const CharacterRenameHistoryModal: React.FC<{ id: string }> = ({ id }) => {
   );
 };
 
-export default CharacterRenameHistoryModal;
+export default GuildRenameHistoryModal;

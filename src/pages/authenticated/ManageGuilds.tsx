@@ -11,13 +11,14 @@ import { debounce } from 'lodash';
 import DataTable from '../../components/ui/DataTable';
 import { useModal } from '../../context/ModalContext';
 import type { GuildType } from '../../types/GuildType';
-import { MdPeople } from 'react-icons/md';
+import { MdHistoryEdu, MdPeople } from 'react-icons/md';
 import GuildMembersModal from '../../components/modals/GuildMembersModal';
 import GuildBankModal from '../../components/modals/GuildBankModal';
 import { GiBank } from 'react-icons/gi';
 import GuildRenameModal from '../../components/modals/GuildRenameModal';
 import { FaEdit, FaScroll } from 'react-icons/fa';
 import GuildBankHistoryModal from '../../components/modals/GuildBankHistoryModal';
+import GuildRenameHistoryModal from '../../components/modals/GuildRenameHistoryModal';
 
 type GuildsResponse = {
   success: boolean;
@@ -73,24 +74,25 @@ const ManageGuilds: React.FC = () => {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { data, isLoading, isFetching, isError } = useQuery<GuildsResponse>({
-    queryKey: [
-      'Guilds',
-      pagination.pageIndex,
-      pagination.pageSize,
-      globalFilter,
-      sorting,
-    ],
-    queryFn: () =>
-      fetchGuilds(
-        pagination.pageIndex + 1,
+  const { data, isLoading, isFetching, isError, refetch } =
+    useQuery<GuildsResponse>({
+      queryKey: [
+        'Guilds',
+        pagination.pageIndex,
         pagination.pageSize,
         globalFilter,
-        sorting
-      ),
-    placeholderData: (prev) => prev,
-    staleTime: 5 * 60 * 1000,
-  });
+        sorting,
+      ],
+      queryFn: () =>
+        fetchGuilds(
+          pagination.pageIndex + 1,
+          pagination.pageSize,
+          globalFilter,
+          sorting
+        ),
+      placeholderData: (prev) => prev,
+      staleTime: 5 * 60 * 1000,
+    });
 
   const columns: ColumnDef<GuildType>[] = [
     { accessorKey: 'm_idGuild', header: 'ID' },
@@ -123,7 +125,7 @@ const ManageGuilds: React.FC = () => {
                   'xl'
                 );
               }}
-              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
             >
               <MdPeople size={22} />
             </button>
@@ -135,7 +137,7 @@ const ManageGuilds: React.FC = () => {
                   `Guild Bank - ${m_szGuild}`
                 );
               }}
-              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
             >
               <GiBank size={22} />
             </button>
@@ -148,7 +150,7 @@ const ManageGuilds: React.FC = () => {
                   'xl'
                 );
               }}
-              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
             >
               <FaScroll size={22} />
             </button>
@@ -159,13 +161,29 @@ const ManageGuilds: React.FC = () => {
                   <GuildRenameModal
                     m_idGuild={m_idGuild}
                     m_szGuild={m_szGuild}
+                    onSuccess={() => {
+                      refetch();
+                    }}
                   />,
                   `Guild Rename - ${m_szGuild}`
                 );
               }}
-              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
             >
               <FaEdit size={20} />
+            </button>
+            <button
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
+              onClick={() => {
+                showModal(
+                  <GuildRenameHistoryModal id={m_idGuild} />,
+                  `Guild Rename History - ${m_szGuild} - ${m_idGuild}`,
+                  'xl'
+                );
+              }}
+              title="Change Guild Name History"
+            >
+              <MdHistoryEdu size={24} />
             </button>
           </div>
         );

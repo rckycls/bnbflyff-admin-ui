@@ -16,6 +16,7 @@ import ViewPlayerItems from './pages/authenticated/ViewPlayerItems';
 import ManageGameMasters from './pages/authenticated/ManageGameMasters';
 import NotFound from './pages/NotFound';
 import ManageGuilds from './pages/authenticated/ManageGuilds';
+import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
   const { loading } = useLoader();
@@ -47,6 +48,7 @@ const App: React.FC = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster position="top-right" />
     </div>
   );
 };

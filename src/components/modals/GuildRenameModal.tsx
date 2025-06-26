@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axiosClient from '../../api/axiosClient';
+import toast from 'react-hot-toast';
+import { useModal } from '../../context/ModalContext';
 
 type GuildRenameProps = {
   m_idGuild: string;
   m_szGuild: string;
+  onSuccess: () => void;
 };
 
 const GuildRenameModal: React.FC<GuildRenameProps> = ({
   m_idGuild,
   m_szGuild,
+  onSuccess,
 }) => {
+  const { closeModal } = useModal();
   const [newName, setNewName] = useState('');
 
   const { mutate, isPending } = useMutation({
     mutationFn: (name: string) =>
-      axiosClient.patch(`/auth/guilds/${m_idGuild}`, {
-        m_szGuild: name,
-      }),
+      toast.promise(
+        axiosClient.patch(`/auth/guilds/${m_idGuild}`, {
+          m_szGuild: name,
+        }),
+        {
+          loading: 'Renaming guild...',
+          success: 'Guild renamed successfully!',
+          error: 'Failed to rename guild.',
+        }
+      ),
     onSuccess: () => {
-      alert('Guild renamed successfully!');
-    },
-    onError: () => {
-      alert('Failed to rename guild.');
+      onSuccess();
+      setTimeout(closeModal, 1000);
     },
   });
 

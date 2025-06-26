@@ -20,6 +20,7 @@ import { GiNinjaArmor } from 'react-icons/gi';
 import { useModal } from '../../context/ModalContext';
 import CharacterRenameModal from '../../components/modals/CharacterRenameModal';
 import CharacterRenameHistoryModal from '../../components/modals/CharacterRenameHistoryModal';
+import { MdHistoryEdu } from 'react-icons/md';
 
 type Character = {
   m_idPlayer: string;
@@ -85,8 +86,8 @@ const ManageCharacters: React.FC = () => {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(defaultColumnVisibility);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { data, isLoading, isFetching, isError } = useQuery<CharactersResponse>(
-    {
+  const { data, isLoading, isFetching, isError, refetch } =
+    useQuery<CharactersResponse>({
       queryKey: [
         'characters',
         pagination.pageIndex,
@@ -103,8 +104,7 @@ const ManageCharacters: React.FC = () => {
         ),
       placeholderData: (prev) => prev,
       staleTime: 5 * 60 * 1000,
-    }
-  );
+    });
 
   const columns: ColumnDef<Character>[] = [
     { accessorKey: 'account', header: 'Account' },
@@ -143,6 +143,9 @@ const ManageCharacters: React.FC = () => {
                   <CharacterRenameModal
                     m_idPlayer={m_idPlayer}
                     m_szName={m_szName}
+                    onSuccess={() => {
+                      refetch();
+                    }}
                   />,
                   `Rename - ${m_szName} - ${m_idPlayer}`
                 );
@@ -162,7 +165,7 @@ const ManageCharacters: React.FC = () => {
               }}
               title="Change Name History"
             >
-              <FaScroll size={18} />
+              <MdHistoryEdu size={24} />
             </button>
             <button
               className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
