@@ -10,7 +10,6 @@ import { debounce } from 'lodash';
 import DataTable from '../ui/DataTable';
 import moment from 'moment';
 import type { InventoryItem } from '../../types/InventoryItemType';
-import InventorySlot from '../inventory/InventorySlot';
 import { useItemTooltip } from '../../context/ItemTooltipContext';
 
 type GuildBankHistoryType = {
