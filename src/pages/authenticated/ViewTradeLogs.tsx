@@ -1,20 +1,20 @@
-import React from "react";
-import moment from "moment";
+import React, { useEffect } from 'react';
+import moment from 'moment';
 import type {
   ColumnDef,
   VisibilityState,
   SortingState,
-} from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
-import axiosClient from "../../api/axiosClient";
-import { debounce } from "lodash";
-import DataTable from "../../components/ui/DataTable";
-import { useNavigate } from "react-router-dom";
-import type { TradeLogType } from "../../types/TradeLogType";
-import TradeLogDetail from "../../components/tradelogs/TradeLogDetail";
-import { useModal } from "../../context/ModalContext";
-import { RiExchangeBoxFill } from "react-icons/ri";
-import { FaExchangeAlt } from "react-icons/fa";
+} from '@tanstack/react-table';
+import { useQuery } from '@tanstack/react-query';
+import axiosClient from '../../api/axiosClient';
+import { debounce } from 'lodash';
+import DataTable from '../../components/ui/DataTable';
+import { useLocation, useNavigate } from 'react-router-dom';
+import type { TradeLogType } from '../../types/TradeLogType';
+import TradeLogDetail from '../../components/tradelogs/TradeLogDetail';
+import { useModal } from '../../context/ModalContext';
+import { RiExchangeBoxFill } from 'react-icons/ri';
+import { FaExchangeAlt } from 'react-icons/fa';
 
 type TradeLogsResponse = {
   success: boolean;
@@ -28,7 +28,7 @@ type TradeLogsResponse = {
 type SearchType = {
   idPlayer1?: string;
   idPlayer2?: string;
-  ItemInder?: number;
+  ItemIndex?: number;
 };
 
 const fetchTradeLogs = async (
@@ -38,10 +38,10 @@ const fetchTradeLogs = async (
   sorting: SortingState
 ): Promise<TradeLogsResponse> => {
   const sortParam = sorting.length
-    ? `${sorting[0].id}:${sorting[0].desc ? "desc" : "asc"}`
+    ? `${sorting[0].id}:${sorting[0].desc ? 'desc' : 'asc'}`
     : undefined;
 
-  const res = await axiosClient.get("/auth/trade-logs", {
+  const res = await axiosClient.get('/auth/trade-logs', {
     params: { page, limit, ...search, sort: sortParam },
   });
   return res.data;
@@ -53,6 +53,10 @@ const defaultColumnVisibility: VisibilityState = {
 };
 
 const ViewTradeLogs: React.FC = () => {
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const id = urlParams.get('id') || '';
+  const itemId = urlParams.get('itemID') || 0;
   const { showModal } = useModal();
   const navigate = useNavigate();
   const [pagination, setPagination] = React.useState({
@@ -67,7 +71,7 @@ const ViewTradeLogs: React.FC = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { data, isLoading, isFetching, isError } = useQuery<TradeLogsResponse>({
     queryKey: [
-      "tradeLogs",
+      'tradeLogs',
       pagination.pageIndex,
       pagination.pageSize,
       globalFilter,
@@ -85,15 +89,15 @@ const ViewTradeLogs: React.FC = () => {
   });
 
   const columns: ColumnDef<TradeLogType>[] = [
-    { accessorKey: "TradeID", header: "Trade ID" },
+    { accessorKey: 'TradeID', header: 'Trade ID' },
     {
-      accessorKey: "TradeDt",
-      header: "Trade Date",
-      cell: ({ row }) => moment(row.original.TradeDt).format("LLLL"),
+      accessorKey: 'TradeDt',
+      header: 'Trade Date',
+      cell: ({ row }) => moment(row.original.TradeDt).format('LLLL'),
     },
     {
-      accessorKey: "WorldID",
-      header: "Players",
+      accessorKey: 'WorldID',
+      header: 'Players',
       cell: ({ row }) => {
         const tradeLog = row.original;
         return (
@@ -101,7 +105,7 @@ const ViewTradeLogs: React.FC = () => {
             <button
               onClick={() => {
                 navigate(
-                  "/characters/inventory?id=" + tradeLog.details[0].idPlayer
+                  '/characters/inventory?id=' + tradeLog.details[0].idPlayer
                 );
               }}
               className="px-2 py-0.5 bg-secondary text-white rounded-md text-xs min-w-[80px]"
@@ -111,7 +115,7 @@ const ViewTradeLogs: React.FC = () => {
             <button
               onClick={() => {
                 navigate(
-                  "/characters/inventory?id=" + tradeLog.details[1].idPlayer
+                  '/characters/inventory?id=' + tradeLog.details[1].idPlayer
                 );
               }}
               className="px-2 py-0.5 bg-secondary text-white rounded-md text-xs min-w-[80px]"
@@ -122,8 +126,8 @@ const ViewTradeLogs: React.FC = () => {
       },
     },
     {
-      accessorKey: "actions",
-      header: "Details",
+      accessorKey: 'actions',
+      header: 'Details',
       cell: ({ row }) => {
         const tradeLog = row.original;
 
@@ -164,30 +168,39 @@ const ViewTradeLogs: React.FC = () => {
         type="text"
         placeholder="Player ID"
         className="px-4 py-2 border rounded max-w-full md:max-w-[160px] borded-text text-text"
-        onChange={(e) => debouncedSearch("idPlayer1", e.target.value)}
+        onChange={(e) => debouncedSearch('idPlayer1', e.target.value)}
       />
       <input
         type="text"
         placeholder="Player ID"
         className="px-4 py-2 border rounded max-w-full md:max-w-[160px] borded-text text-text"
-        onChange={(e) => debouncedSearch("idPlayer2", e.target.value)}
+        onChange={(e) => debouncedSearch('idPlayer2', e.target.value)}
       />
       <input
         type="text"
         placeholder="Item ID"
         className="px-4 py-2 border rounded max-w-full md:max-w-[160px] borded-text text-text"
-        onChange={(e) => debouncedSearch("ItemIndex", e.target.value)}
+        onChange={(e) => debouncedSearch('ItemIndex', e.target.value)}
       />
     </div>
   );
+
+  useEffect(() => {
+    if (id) {
+      setGlobalFilter((oldFilter) => ({ ...oldFilter, idPlayer1: id }));
+    } else if (itemId) {
+      setGlobalFilter((oldFilter) => ({
+        ...oldFilter,
+        ItemIndex: parseInt(itemId),
+      }));
+    }
+  }, [id, itemId]);
 
   return (
     <div className="min-h-screen bg-surface text-gray-800 p-6 space-y-8">
       <header className="text-center">
         <h1 className="text-4xl font-bold text-brand">View Trade Logs</h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Monitor player trade logs.
-        </p>
+        <p className="mt-2 text-lg text-gray-600">Monitor player trade logs.</p>
       </header>
 
       <DataTable

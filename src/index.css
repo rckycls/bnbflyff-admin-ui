@@ -1,11 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body,
 * {
-  transition: background-color 0.3s ease, color 0.3s ease,
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
     border-color 0.3s ease;
 }
-
 
 @theme {
   --color-brand: #0076c1;
@@ -20,10 +21,19 @@ body,
   --color-danger: #e74c3c;
 }
 
+.bg-image {
+  background: url('./assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center -100px;
+  background-size: cover;
+}
+
 .tooltip {
   opacity: 0;
   transform: translateY(-5px);
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
   pointer-events: none;
 }
 

@@ -15,6 +15,9 @@ import { MdPeople } from 'react-icons/md';
 import GuildMembersModal from '../../components/modals/GuildMembersModal';
 import GuildBankModal from '../../components/modals/GuildBankModal';
 import { GiBank } from 'react-icons/gi';
+import GuildRenameModal from '../../components/modals/GuildRenameModal';
+import { FaEdit, FaScroll } from 'react-icons/fa';
+import GuildBankHistoryModal from '../../components/modals/GuildBankHistoryModal';
 
 type GuildsResponse = {
   success: boolean;
@@ -110,7 +113,7 @@ const ManageGuilds: React.FC = () => {
       cell: ({ row }) => {
         const { m_idGuild, m_szGuild } = row.original;
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center flex-wrap gap-2">
             <button
               title="View Members"
               onClick={() => {
@@ -120,7 +123,7 @@ const ManageGuilds: React.FC = () => {
                   'xl'
                 );
               }}
-              className="p-2 rounded hover:bg-gray-100 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
             >
               <MdPeople size={22} />
             </button>
@@ -132,9 +135,37 @@ const ManageGuilds: React.FC = () => {
                   `Guild Bank - ${m_szGuild}`
                 );
               }}
-              className="p-2 rounded hover:bg-gray-100 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
             >
               <GiBank size={22} />
+            </button>
+            <button
+              title="View Bank History"
+              onClick={() => {
+                showModal(
+                  <GuildBankHistoryModal id={m_idGuild} />,
+                  `Guild Bank History - ${m_szGuild}`,
+                  'xl'
+                );
+              }}
+              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
+            >
+              <FaScroll size={22} />
+            </button>
+            <button
+              title="Rename Guild"
+              onClick={() => {
+                showModal(
+                  <GuildRenameModal
+                    m_idGuild={m_idGuild}
+                    m_szGuild={m_szGuild}
+                  />,
+                  `Guild Rename - ${m_szGuild}`
+                );
+              }}
+              className="p-2 rounded hover:bg-brand-50 text-brand cursor-pointer"
+            >
+              <FaEdit size={20} />
             </button>
           </div>
         );

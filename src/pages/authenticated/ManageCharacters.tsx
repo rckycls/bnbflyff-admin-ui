@@ -8,9 +8,18 @@ import { useQuery } from '@tanstack/react-query';
 import axiosClient from '../../api/axiosClient';
 import { debounce } from 'lodash';
 import DataTable from '../../components/ui/DataTable';
-import { FaExchangeAlt, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import {
+  FaExchangeAlt,
+  FaEdit,
+  FaTrashAlt,
+  FaGavel,
+  FaScroll,
+} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { GiNinjaArmor } from 'react-icons/gi';
+import { useModal } from '../../context/ModalContext';
+import CharacterRenameModal from '../../components/modals/CharacterRenameModal';
+import CharacterRenameHistoryModal from '../../components/modals/CharacterRenameHistoryModal';
 
 type Character = {
   m_idPlayer: string;
@@ -66,6 +75,7 @@ const defaultColumnVisibility: VisibilityState = {
 };
 
 const ManageCharacters: React.FC = () => {
+  const { showModal } = useModal();
   const navigate = useNavigate();
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -116,29 +126,55 @@ const ManageCharacters: React.FC = () => {
       accessorKey: 'actions',
       header: 'Actions',
       cell: ({ row }) => {
+        const { m_idPlayer, m_szName } = row.original;
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center flex-wrap gap-2">
             <button
-              className="p-2 rounded hover:bg-gray-100 text-brand cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
               onClick={() => navigate('/characters/' + row.original.m_idPlayer)}
-              title="Edit"
+              title="Ban"
+            >
+              <FaGavel size={18} />
+            </button>
+            <button
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
+              onClick={() => {
+                showModal(
+                  <CharacterRenameModal
+                    m_idPlayer={m_idPlayer}
+                    m_szName={m_szName}
+                  />,
+                  `Rename - ${m_szName} - ${m_idPlayer}`
+                );
+              }}
+              title="Rename"
             >
               <FaEdit size={18} />
             </button>
             <button
-              className="p-2 rounded hover:bg-gray-100 text-red-600 cursor-pointer"
-              title="Delete"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
+              onClick={() => {
+                showModal(
+                  <CharacterRenameHistoryModal id={m_idPlayer} />,
+                  `Rename History - ${m_szName} - ${m_idPlayer}`,
+                  'xl'
+                );
+              }}
+              title="Change Name History"
             >
-              <FaTrashAlt size={18} />
+              <FaScroll size={18} />
             </button>
             <button
-              className="p-2 rounded hover:bg-gray-100 text-emerald-600 cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
+              onClick={() =>
+                navigate('/trade-logs?id=' + row.original.m_idPlayer)
+              }
               title="Trade Logs"
             >
               <FaExchangeAlt size={18} />
             </button>
             <button
-              className="p-2 rounded hover:bg-gray-100 text-amber-950 cursor-pointer"
+              className="p-2 rounded hover:bg-brand/10 text-brand cursor-pointer"
               onClick={() =>
                 navigate('/characters/inventory?id=' + row.original.m_idPlayer)
               }
